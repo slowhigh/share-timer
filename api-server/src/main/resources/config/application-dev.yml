@@ -1,0 +1,66 @@
+server:
+  port: 5000
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: chronos
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://rdb:5432/timer
+    username: timer
+    password: timer1!
+  data:
+    redis:
+      host: imdb
+      port: 6379
+  jpa:
+    database: postgresql
+    open-in-view: false
+    hibernate:
+      ddl-auto: update # create-only, validate, create-drop, update
+    properties:
+      hibernate:
+        '[show_sql]': false
+        '[format_sql]': true
+        '[use_sql_comments]': true
+        debug:
+          sql: true
+
+logging:
+  file:
+    name: logs/application.log
+    path: logs
+  level:
+    '[com.slowhigh.chronos]': DEBUG
+    '[org.hibernate.tool.schema]': DEBUG
+    '[org.hibernate.SQL]': DEBUG
+    '[org.hibernate.orm.jdbc.bind]': TRACE
+
+springdoc:
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+
+timer:
+  owner-token-header: "X-Owner-Token"
+  expiration:
+    db-index: 0
+    key-prefix: "timer:end:"
+  pubsub:
+    db-index: 1
+    target-time-updated-channel: "timer:target-time-updated"
+    target-time-updated-message-type: "target-time-updated"
+    timestamp-added-channel: "timer:timestamp-added"
+    timestamp-added-message-type: "timestamp-added"
+
+cors:
+  allowed-origins:
+    - "http://localhost:3000"
+
+
+    
