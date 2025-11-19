@@ -1,0 +1,92 @@
+{
+  "groups": [
+    {
+      "name": "cors",
+      "type": "com.slowhigh.chronos.common.config.CorsProps",
+      "sourceType": "com.slowhigh.chronos.common.config.CorsProps"
+    },
+    {
+      "name": "spring.data.redis",
+      "type": "com.slowhigh.chronos.common.config.RedisProps",
+      "sourceType": "com.slowhigh.chronos.common.config.RedisProps"
+    },
+    {
+      "name": "timer",
+      "type": "com.slowhigh.chronos.timer.config.TimerProps",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps"
+    },
+    {
+      "name": "timer.expiration",
+      "type": "com.slowhigh.chronos.timer.config.TimerProps$Expiration",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps",
+      "sourceMethod": "getExpiration()"
+    },
+    {
+      "name": "timer.pub-sub",
+      "type": "com.slowhigh.chronos.timer.config.TimerProps$PubSub",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps",
+      "sourceMethod": "getPubSub()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "cors.allowed-origins",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.slowhigh.chronos.common.config.CorsProps"
+    },
+    {
+      "name": "spring.data.redis.host",
+      "type": "java.lang.String",
+      "sourceType": "com.slowhigh.chronos.common.config.RedisProps"
+    },
+    {
+      "name": "spring.data.redis.port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.slowhigh.chronos.common.config.RedisProps",
+      "defaultValue": 0
+    },
+    {
+      "name": "timer.expiration.db-index",
+      "type": "java.lang.Integer",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps$Expiration",
+      "defaultValue": 0
+    },
+    {
+      "name": "timer.expiration.key-prefix",
+      "type": "java.lang.String",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps$Expiration"
+    },
+    {
+      "name": "timer.owner-token-header",
+      "type": "java.lang.String",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps"
+    },
+    {
+      "name": "timer.pub-sub.db-index",
+      "type": "java.lang.Integer",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps$PubSub",
+      "defaultValue": 0
+    },
+    {
+      "name": "timer.pub-sub.target-time-updated-channel",
+      "type": "java.lang.String",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps$PubSub"
+    },
+    {
+      "name": "timer.pub-sub.target-time-updated-message-type",
+      "type": "java.lang.String",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps$PubSub"
+    },
+    {
+      "name": "timer.pub-sub.timestamp-added-channel",
+      "type": "java.lang.String",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps$PubSub"
+    },
+    {
+      "name": "timer.pub-sub.timestamp-added-message-type",
+      "type": "java.lang.String",
+      "sourceType": "com.slowhigh.chronos.timer.config.TimerProps$PubSub"
+    }
+  ],
+  "hints": []
+}
