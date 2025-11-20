@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim AS build
+FROM openjdk:21-ea-21-jdk-slim AS build
 
 WORKDIR /app
 
@@ -6,7 +6,7 @@ COPY . /app/
 
 RUN ./mvnw clean package -P dev -D skipTests
 
-FROM openjdk:21-jdk
+FROM openjdk:21-ea-21-jdk
 
 WORKDIR /app
 
