@@ -14,14 +14,6 @@ Whether you're coordinating an online study session, managing a team sprint, or 
 
 ---
 
-## 💡 Why ShareTimer?
-
-Time isn’t just personal — it’s something we experience together.  
-With **ShareTimer**, you can easily align your time with friends, teammates, or anyone you collaborate with.  
-Stay in sync. Stay on time.
-
----
-
 ## ⚙️ Architecture Overview
 
 The ShareTimer system is composed of the following main components:
@@ -30,6 +22,29 @@ The ShareTimer system is composed of the following main components:
 - **Realtime Server (SSE gateway)** — Exposes SSE endpoints for clients to subscribe to timer channels. Delivers ordered events, supports reconnection with `Heartbeat`, and acts as the pub/sub bridge.
 - **PostgreSQL** — Durable storage for timer records and timestamp history.
 - **Redis** — Handles TTL-based expiration, pub/sub for notifying the Realtime Server of events.
+
+---
+
+## 💡 How to Run
+### 🚀 Using Docker Compose
+To start the service with Docker, simply run the following command from the project root directory, where the compose.yaml file is located:
+```
+docker compose up -d
+```
+This command builds and runs all necessary services in detached mode.
+
+### 🌐 Access the Web Interface
+Once the containers are running, open your browser and navigate to:
+- **Web Client**: http://localhost:3000/
+
+### 📘 API Documentation
+#### 📑 API Server Documentation
+Access the main API server’s Swagger documentation at:
+- http://localhost:5000/api/v1/swagger-ui/index.html
+
+#### 🔄 Realtime Server Documentation
+View the realtime event server’s Swagger documentation here:
+- http://localhost:5500/event/v1/swagger-ui/index.html
 
 ---
 
