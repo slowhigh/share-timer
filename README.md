@@ -50,7 +50,7 @@ View the realtime event server’s Swagger documentation here:
 
 ## 🔀 Sequence Diagrams
 
-### Timer Creation
+### Creating a Timer
 
 The user configures a timer and sends a creation request to the API Server.
 The server validates the input, stores the timer in PostgreSQL, and returns a unique shareable Id.
