@@ -10,3 +10,39 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      routes:
+        - id: timer-service
+          uri: lb://chronos
+          predicates:
+            - Path=/chronos/**
+          order: 1
+        - id: realtime-service
+          uri: lb://kairos
+          predicates:
+            - Path=/kairos/**
+          order: 2
+        - id: client-ui
+          uri: http://client:3000
+          predicates:
+            - Path=/**
+          order: 1000
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always

@@ -15,6 +15,7 @@ RUN chmod +x gradlew
 RUN ./gradlew :realtime-service:bootJar --no-daemon
 
 FROM openjdk:21-ea-21-jdk-slim
+RUN apt-get update && apt-get install -y curl
 WORKDIR /app
 COPY --from=build /app/realtime-service/build/libs/*.jar app.jar
 ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "app.jar"]
