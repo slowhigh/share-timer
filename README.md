@@ -9,7 +9,7 @@ Whether you're coordinating an online study session, managing a team sprint, or 
 
 - 🧭 **Create** — Set up timers in seconds with a clean, intuitive interface.  
 - 🔗 **Share** — Generate a unique link to share your timer with anyone, anywhere.  
-- ⏱️ **Sync (SSE)** — All timer events (creation, updates, timestamp additions, and expirations) are synchronized to connected clients using Server‑Sent Events (SSE).
+- ⏱️ **Sync (SSE)** — All timer events (updates, timestamp additions, and expirations) are synchronized to connected clients using Server‑Sent Events (SSE).
 - 💻 **Flexible** — Works on any device, no login required.
 
 ---
