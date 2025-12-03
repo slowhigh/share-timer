@@ -31,18 +31,17 @@ To start the service with Docker, simply run the following command from the proj
 ```
 docker compose up -d
 ```
-This command builds and runs all necessary services in detached mode.
 
 ### 🌐 Access the Web Interface
 Once the containers are running, open your browser and navigate to:
 - **Web Client**: http://localhost:3000/
 
 ### 📘 API Documentation
-#### 📑 API Server Documentation
+#### API Server Documentation
 Access the main API server’s Swagger documentation at:
 - http://localhost:5000/api/v1/swagger-ui/index.html
 
-#### 🔄 Realtime Server Documentation
+#### Realtime Server Documentation
 View the realtime event server’s Swagger documentation here:
 - http://localhost:5500/event/v1/swagger-ui/index.html
 
