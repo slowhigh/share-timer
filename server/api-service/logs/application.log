@@ -1,0 +1,494 @@
+2025-12-04T14:46:38.038+09:00  INFO 10324 --- [api-service] [restartedMain] c.s.apiservice.ApiServiceApplication     : Starting ApiServiceApplication using Java 21.0.4 with PID 10324 (D:\code\git\share-timer\server\api-service\build\classes\java\main started by yhjo in D:\code\git\share-timer\server\api-service)
+2025-12-04T14:46:38.038+09:00 DEBUG 10324 --- [api-service] [restartedMain] c.s.apiservice.ApiServiceApplication     : Running with Spring Boot v3.3.5, Spring v6.1.14
+2025-12-04T14:46:38.039+09:00  INFO 10324 --- [api-service] [restartedMain] c.s.apiservice.ApiServiceApplication     : The following 1 profile is active: "local"
+2025-12-04T14:46:38.072+09:00  INFO 10324 --- [api-service] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-04T14:46:38.073+09:00  INFO 10324 --- [api-service] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-04T14:46:38.788+09:00  INFO 10324 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-12-04T14:46:38.788+09:00  INFO 10324 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-12-04T14:46:38.808+09:00  INFO 10324 --- [api-service] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.sharetimer.apiservice.repository.TimerRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-12-04T14:46:38.809+09:00  INFO 10324 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 0 JDBC repository interfaces.
+2025-12-04T14:46:38.813+09:00  INFO 10324 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-12-04T14:46:38.814+09:00  INFO 10324 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-04T14:46:38.880+09:00  INFO 10324 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 64 ms. Found 1 JPA repository interface.
+2025-12-04T14:46:38.888+09:00  INFO 10324 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-12-04T14:46:38.889+09:00  INFO 10324 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-12-04T14:46:38.898+09:00  INFO 10324 --- [api-service] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.sharetimer.apiservice.repository.TimerRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-04T14:46:38.899+09:00  INFO 10324 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2025-12-04T14:46:39.057+09:00  INFO 10324 --- [api-service] [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=286f91b4-cfbf-32b4-b7d3-b6c931890198
+2025-12-04T14:46:39.270+09:00  WARN 10324 --- [api-service] [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig' of type [org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [lbRestClientPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2025-12-04T14:46:39.273+09:00  WARN 10324 --- [api-service] [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'deferringLoadBalancerInterceptor' of type [org.springframework.cloud.client.loadbalancer.DeferringLoadBalancerInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [lbRestClientPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-12-04T14:46:39.546+09:00  INFO 10324 --- [api-service] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 5000 (http)
+2025-12-04T14:46:39.555+09:00  INFO 10324 --- [api-service] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-04T14:46:39.555+09:00  INFO 10324 --- [api-service] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.31]
+2025-12-04T14:46:39.594+09:00  INFO 10324 --- [api-service] [restartedMain] o.a.c.c.C.[.[localhost].[/api/v1]        : Initializing Spring embedded WebApplicationContext
+2025-12-04T14:46:39.595+09:00  INFO 10324 --- [api-service] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1521 ms
+2025-12-04T14:46:39.675+09:00  INFO 10324 --- [api-service] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-04T14:46:39.763+09:00  INFO 10324 --- [api-service] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7f5cc5ba
+2025-12-04T14:46:39.764+09:00  INFO 10324 --- [api-service] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-04T14:46:39.770+09:00  INFO 10324 --- [api-service] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:postgresql://localhost:5432/timer'
+2025-12-04T14:46:39.912+09:00  INFO 10324 --- [api-service] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-04T14:46:39.942+09:00  INFO 10324 --- [api-service] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2025-12-04T14:46:39.962+09:00  INFO 10324 --- [api-service] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-04T14:46:40.141+09:00  INFO 10324 --- [api-service] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-04T14:46:40.186+09:00  WARN 10324 --- [api-service] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-04T14:46:40.805+09:00  INFO 10324 --- [api-service] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-04T14:46:40.873+09:00  INFO 10324 --- [api-service] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-04T14:46:41.930+09:00  INFO 10324 --- [api-service] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-12-04T14:46:41.951+09:00  INFO 10324 --- [api-service] [restartedMain] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2025-12-04T14:46:41.985+09:00  WARN 10324 --- [api-service] [restartedMain] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-12-04T14:46:41.991+09:00  INFO 10324 --- [api-service] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-12-04T14:46:42.037+09:00  INFO 10324 --- [api-service] [restartedMain] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2025-12-04T14:46:42.053+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2025-12-04T14:46:42.055+09:00  INFO 10324 --- [api-service] [restartedMain] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-12-04T14:46:42.060+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-12-04T14:46:42.060+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-12-04T14:46:42.060+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-12-04T14:46:42.061+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-12-04T14:46:42.061+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-12-04T14:46:42.061+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2025-12-04T14:46:42.061+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-12-04T14:46:42.303+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-12-04T14:46:42.304+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2025-12-04T14:46:42.305+09:00  INFO 10324 --- [api-service] [restartedMain] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-12-04T14:46:42.306+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1764827202305 with initial instances count: 2
+2025-12-04T14:46:42.311+09:00  INFO 10324 --- [api-service] [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application API-SERVICE with eureka with status UP
+2025-12-04T14:46:42.311+09:00  INFO 10324 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1764827202311, current=UP, previous=STARTING]
+2025-12-04T14:46:42.312+09:00  INFO 10324 --- [api-service] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_API-SERVICE/host.docker.internal:api-service:5000: registering service...
+2025-12-04T14:46:42.323+09:00  INFO 10324 --- [api-service] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 5000 (http) with context path '/api/v1'
+2025-12-04T14:46:42.324+09:00  INFO 10324 --- [api-service] [restartedMain] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 5000
+2025-12-04T14:46:42.334+09:00  INFO 10324 --- [api-service] [restartedMain] c.s.apiservice.ApiServiceApplication     : Started ApiServiceApplication in 4.571 seconds (process running for 4.941)
+2025-12-04T14:46:42.338+09:00  INFO 10324 --- [api-service] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_API-SERVICE/host.docker.internal:api-service:5000 - registration status: 204
+2025-12-04T14:46:47.821+09:00  INFO 10324 --- [api-service] [http-nio-5000-exec-1] o.a.c.c.C.[.[localhost].[/api/v1]        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-04T14:46:47.822+09:00  INFO 10324 --- [api-service] [http-nio-5000-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-12-04T14:46:47.823+09:00  INFO 10324 --- [api-service] [http-nio-5000-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-12-04T14:46:47.894+09:00 DEBUG 10324 --- [api-service] [http-nio-5000-exec-2] c.s.a.controller.TimerController         : 타이머 생성 요청: TimerCreateReq[targetTime=2025-12-04T06:46:47Z]
+2025-12-04T14:46:47.932+09:00 DEBUG 10324 --- [api-service] [http-nio-5000-exec-2] c.s.a.service.impl.TimerServiceImpl      : 신규 타이머 생성: timerId=aed2f205-fd2c-4389-bfc9-b47e4f3dbbf4, ownerToken=837cdc75-96d8-40f1-bd9a-d59f15bff1e5
+2025-12-04T14:46:48.178+09:00 DEBUG 10324 --- [api-service] [http-nio-5000-exec-2] c.s.apiservice.handler.TimerHandler      : Timer(aed2f205-fd2c-4389-bfc9-b47e4f3dbbf4)가 3600초 후에 만료되도록 설정되었습니다.
+2025-12-04T14:46:48.192+09:00 DEBUG 10324 --- [api-service] [http-nio-5000-exec-2] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timer */insert 
+    into
+        timers (created_at, owner_token, target_time, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-12-04T14:46:48.193+09:00 TRACE 10324 --- [api-service] [http-nio-5000-exec-2] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T05:46:47.914703700Z]
+2025-12-04T14:46:48.194+09:00 TRACE 10324 --- [api-service] [http-nio-5000-exec-2] org.hibernate.orm.jdbc.bind              : binding parameter (2:UUID) <- [837cdc75-96d8-40f1-bd9a-d59f15bff1e5]
+2025-12-04T14:46:48.194+09:00 TRACE 10324 --- [api-service] [http-nio-5000-exec-2] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:46:47Z]
+2025-12-04T14:46:48.194+09:00 TRACE 10324 --- [api-service] [http-nio-5000-exec-2] org.hibernate.orm.jdbc.bind              : binding parameter (4:TIMESTAMP_UTC) <- [2025-12-04T05:46:47.914703700Z]
+2025-12-04T14:46:48.194+09:00 TRACE 10324 --- [api-service] [http-nio-5000-exec-2] org.hibernate.orm.jdbc.bind              : binding parameter (5:UUID) <- [aed2f205-fd2c-4389-bfc9-b47e4f3dbbf4]
+2025-12-04T14:46:48.205+09:00 DEBUG 10324 --- [api-service] [http-nio-5000-exec-2] c.s.a.controller.TimerController         : 타이머 생성 응답: TimerCreateRes[timerId=aed2f205-fd2c-4389-bfc9-b47e4f3dbbf4, ownerToken=837cdc75-96d8-40f1-bd9a-d59f15bff1e5]
+2025-12-04T14:46:48.309+09:00 DEBUG 10324 --- [api-service] [http-nio-5000-exec-5] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T14:46:48.310+09:00 TRACE 10324 --- [api-service] [http-nio-5000-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [aed2f205-fd2c-4389-bfc9-b47e4f3dbbf4]
+2025-12-04T14:46:48.322+09:00 DEBUG 10324 --- [api-service] [http-nio-5000-exec-5] org.hibernate.SQL                        : 
+    select
+        t1_0.timer_id,
+        t1_0.id,
+        t1_0.captured_at,
+        t1_0.created_at,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timestamps t1_0 
+    where
+        t1_0.timer_id=?
+2025-12-04T14:46:48.322+09:00 TRACE 10324 --- [api-service] [http-nio-5000-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [aed2f205-fd2c-4389-bfc9-b47e4f3dbbf4]
+2025-12-04T14:54:47.965+09:00  INFO 21520 --- [api-service] [restartedMain] c.s.apiservice.ApiServiceApplication     : Starting ApiServiceApplication using Java 21.0.4 with PID 21520 (D:\code\git\share-timer\server\api-service\build\classes\java\main started by yhjo in D:\code\git\share-timer\server\api-service)
+2025-12-04T14:54:47.966+09:00 DEBUG 21520 --- [api-service] [restartedMain] c.s.apiservice.ApiServiceApplication     : Running with Spring Boot v3.3.5, Spring v6.1.14
+2025-12-04T14:54:47.966+09:00  INFO 21520 --- [api-service] [restartedMain] c.s.apiservice.ApiServiceApplication     : The following 1 profile is active: "local"
+2025-12-04T14:54:48.000+09:00  INFO 21520 --- [api-service] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-04T14:54:48.000+09:00  INFO 21520 --- [api-service] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-04T14:54:48.682+09:00  INFO 21520 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-12-04T14:54:48.683+09:00  INFO 21520 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-12-04T14:54:48.704+09:00  INFO 21520 --- [api-service] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.sharetimer.apiservice.repository.TimerRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-12-04T14:54:48.704+09:00  INFO 21520 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19 ms. Found 0 JDBC repository interfaces.
+2025-12-04T14:54:48.711+09:00  INFO 21520 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-12-04T14:54:48.712+09:00  INFO 21520 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-04T14:54:48.780+09:00  INFO 21520 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 66 ms. Found 1 JPA repository interface.
+2025-12-04T14:54:48.786+09:00  INFO 21520 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-12-04T14:54:48.787+09:00  INFO 21520 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-12-04T14:54:48.793+09:00  INFO 21520 --- [api-service] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.sharetimer.apiservice.repository.TimerRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-04T14:54:48.794+09:00  INFO 21520 --- [api-service] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 2 ms. Found 0 Redis repository interfaces.
+2025-12-04T14:54:48.935+09:00  INFO 21520 --- [api-service] [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=286f91b4-cfbf-32b4-b7d3-b6c931890198
+2025-12-04T14:54:49.147+09:00  WARN 21520 --- [api-service] [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig' of type [org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [lbRestClientPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2025-12-04T14:54:49.149+09:00  WARN 21520 --- [api-service] [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'deferringLoadBalancerInterceptor' of type [org.springframework.cloud.client.loadbalancer.DeferringLoadBalancerInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [lbRestClientPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-12-04T14:54:49.485+09:00  INFO 21520 --- [api-service] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 5000 (http)
+2025-12-04T14:54:49.495+09:00  INFO 21520 --- [api-service] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-04T14:54:49.495+09:00  INFO 21520 --- [api-service] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.31]
+2025-12-04T14:54:49.546+09:00  INFO 21520 --- [api-service] [restartedMain] o.a.c.c.C.[.[localhost].[/api/v1]        : Initializing Spring embedded WebApplicationContext
+2025-12-04T14:54:49.547+09:00  INFO 21520 --- [api-service] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1547 ms
+2025-12-04T14:54:49.628+09:00  INFO 21520 --- [api-service] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-04T14:54:49.712+09:00  INFO 21520 --- [api-service] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7f5cc5ba
+2025-12-04T14:54:49.713+09:00  INFO 21520 --- [api-service] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-04T14:54:49.719+09:00  INFO 21520 --- [api-service] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:postgresql://localhost:5432/timer'
+2025-12-04T14:54:49.868+09:00  INFO 21520 --- [api-service] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-04T14:54:49.900+09:00  INFO 21520 --- [api-service] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2025-12-04T14:54:49.922+09:00  INFO 21520 --- [api-service] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-04T14:54:50.097+09:00  INFO 21520 --- [api-service] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-04T14:54:50.139+09:00  WARN 21520 --- [api-service] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-04T14:54:50.712+09:00  INFO 21520 --- [api-service] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-04T14:54:50.773+09:00  INFO 21520 --- [api-service] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-04T14:54:51.787+09:00  WARN 21520 --- [api-service] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2025-12-04T14:54:51.810+09:00  INFO 21520 --- [api-service] [restartedMain] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2025-12-04T14:54:51.850+09:00  WARN 21520 --- [api-service] [restartedMain] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-12-04T14:54:51.856+09:00  INFO 21520 --- [api-service] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-12-04T14:54:51.904+09:00  INFO 21520 --- [api-service] [restartedMain] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2025-12-04T14:54:51.921+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2025-12-04T14:54:51.923+09:00  INFO 21520 --- [api-service] [restartedMain] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-12-04T14:54:51.928+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-12-04T14:54:51.928+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-12-04T14:54:51.928+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-12-04T14:54:51.928+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-12-04T14:54:51.928+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-12-04T14:54:51.928+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2025-12-04T14:54:51.928+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-12-04T14:54:52.161+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-12-04T14:54:52.162+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2025-12-04T14:54:52.163+09:00  INFO 21520 --- [api-service] [restartedMain] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-12-04T14:54:52.164+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1764827692163 with initial instances count: 4
+2025-12-04T14:54:52.168+09:00  INFO 21520 --- [api-service] [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application API-SERVICE with eureka with status UP
+2025-12-04T14:54:52.168+09:00  INFO 21520 --- [api-service] [restartedMain] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1764827692168, current=UP, previous=STARTING]
+2025-12-04T14:54:52.169+09:00  INFO 21520 --- [api-service] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_API-SERVICE/host.docker.internal:api-service:5000: registering service...
+2025-12-04T14:54:52.181+09:00  INFO 21520 --- [api-service] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 5000 (http) with context path '/api/v1'
+2025-12-04T14:54:52.181+09:00  INFO 21520 --- [api-service] [restartedMain] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 5000
+2025-12-04T14:54:52.192+09:00  INFO 21520 --- [api-service] [restartedMain] c.s.apiservice.ApiServiceApplication     : Started ApiServiceApplication in 4.501 seconds (process running for 4.824)
+2025-12-04T14:54:52.195+09:00  INFO 21520 --- [api-service] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_API-SERVICE/host.docker.internal:api-service:5000 - registration status: 204
+2025-12-04T14:55:01.313+09:00  INFO 21520 --- [api-service] [http-nio-5000-exec-1] o.a.c.c.C.[.[localhost].[/api/v1]        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-04T14:55:01.313+09:00  INFO 21520 --- [api-service] [http-nio-5000-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-12-04T14:55:01.315+09:00  INFO 21520 --- [api-service] [http-nio-5000-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-12-04T14:55:01.380+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-1] c.s.a.controller.TimerController         : 타이머 생성 요청: TimerCreateReq[targetTime=2025-12-04T06:54:59Z]
+2025-12-04T14:55:01.422+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-1] c.s.a.service.impl.TimerServiceImpl      : 신규 타이머 생성: timerId=2aaa1157-7402-4e6a-888c-c237a742e74c, ownerToken=9e479658-286a-4c9d-b3ea-f490b713ff74
+2025-12-04T14:55:01.665+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-1] c.s.apiservice.handler.TimerHandler      : Timer(2aaa1157-7402-4e6a-888c-c237a742e74c)가 3598초 후에 만료되도록 설정되었습니다.
+2025-12-04T14:55:01.677+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timer */insert 
+    into
+        timers (created_at, owner_token, target_time, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-12-04T14:55:01.678+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T05:55:01.403443400Z]
+2025-12-04T14:55:01.678+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (2:UUID) <- [9e479658-286a-4c9d-b3ea-f490b713ff74]
+2025-12-04T14:55:01.678+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:54:59Z]
+2025-12-04T14:55:01.679+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (4:TIMESTAMP_UTC) <- [2025-12-04T05:55:01.403443400Z]
+2025-12-04T14:55:01.679+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (5:UUID) <- [2aaa1157-7402-4e6a-888c-c237a742e74c]
+2025-12-04T14:55:01.689+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-1] c.s.a.controller.TimerController         : 타이머 생성 응답: TimerCreateRes[timerId=2aaa1157-7402-4e6a-888c-c237a742e74c, ownerToken=9e479658-286a-4c9d-b3ea-f490b713ff74]
+2025-12-04T14:55:01.764+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-2] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T14:55:01.764+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-2] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [2aaa1157-7402-4e6a-888c-c237a742e74c]
+2025-12-04T14:55:01.776+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-2] org.hibernate.SQL                        : 
+    select
+        t1_0.timer_id,
+        t1_0.id,
+        t1_0.captured_at,
+        t1_0.created_at,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timestamps t1_0 
+    where
+        t1_0.timer_id=?
+2025-12-04T14:55:01.776+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-2] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [2aaa1157-7402-4e6a-888c-c237a742e74c]
+2025-12-04T14:55:12.668+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T14:55:12.669+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [2aaa1157-7402-4e6a-888c-c237a742e74c]
+2025-12-04T14:55:12.670+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.SQL                        : 
+    select
+        t1_0.timer_id,
+        t1_0.id,
+        t1_0.captured_at,
+        t1_0.created_at,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timestamps t1_0 
+    where
+        t1_0.timer_id=?
+2025-12-04T14:55:12.670+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [2aaa1157-7402-4e6a-888c-c237a742e74c]
+2025-12-04T14:55:17.306+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T14:55:17.307+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [2aaa1157-7402-4e6a-888c-c237a742e74c]
+2025-12-04T14:55:17.344+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-8] c.s.apiservice.handler.TimerHandler      : Timer(2aaa1157-7402-4e6a-888c-c237a742e74c)에 타임스탬프가 추가되었습니다. 푸시 메시지 전송: {"timerId":"2aaa1157-7402-4e6a-888c-c237a742e74c","type":"timestamp-added","payload":{"targetTime":"2025-12-04T06:54:59Z","capturedAt":"2025-12-04T05:55:17Z"}}
+2025-12-04T14:55:17.349+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timestamp */insert 
+    into
+        timestamps (captured_at, created_at, target_time, timer_id, updated_at) 
+    values
+        (?, ?, ?, ?, ?) 
+    returning id
+2025-12-04T14:55:17.350+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T05:55:17Z]
+2025-12-04T14:55:17.351+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2025-12-04T05:55:17.347046Z]
+2025-12-04T14:55:17.351+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:54:59Z]
+2025-12-04T14:55:17.351+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (4:UUID) <- [2aaa1157-7402-4e6a-888c-c237a742e74c]
+2025-12-04T14:55:17.351+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (5:TIMESTAMP_UTC) <- [2025-12-04T05:55:17.347046Z]
+2025-12-04T14:57:22.278+09:00  INFO 21520 --- [api-service] [DiscoveryClient-HeartbeatExecutor-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_API-SERVICE/host.docker.internal:api-service:5000 - Re-registering apps/API-SERVICE
+2025-12-04T14:57:22.278+09:00  INFO 21520 --- [api-service] [DiscoveryClient-HeartbeatExecutor-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_API-SERVICE/host.docker.internal:api-service:5000: registering service...
+2025-12-04T14:57:22.284+09:00  INFO 21520 --- [api-service] [DiscoveryClient-HeartbeatExecutor-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_API-SERVICE/host.docker.internal:api-service:5000 - registration status: 204
+2025-12-04T14:57:52.285+09:00  INFO 21520 --- [api-service] [DiscoveryClient-CacheRefreshExecutor-%d] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-12-04T14:57:52.285+09:00  INFO 21520 --- [api-service] [DiscoveryClient-CacheRefreshExecutor-%d] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-12-04T14:57:52.285+09:00  INFO 21520 --- [api-service] [DiscoveryClient-CacheRefreshExecutor-%d] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-12-04T14:57:52.285+09:00  INFO 21520 --- [api-service] [DiscoveryClient-CacheRefreshExecutor-%d] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-12-04T14:57:52.285+09:00  INFO 21520 --- [api-service] [DiscoveryClient-CacheRefreshExecutor-%d] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-12-04T14:57:52.285+09:00  INFO 21520 --- [api-service] [DiscoveryClient-CacheRefreshExecutor-%d] com.netflix.discovery.DiscoveryClient    : Application version is -1: false
+2025-12-04T14:57:52.285+09:00  INFO 21520 --- [api-service] [DiscoveryClient-CacheRefreshExecutor-%d] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-12-04T14:57:52.293+09:00  INFO 21520 --- [api-service] [DiscoveryClient-CacheRefreshExecutor-%d] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-12-04T14:59:51.939+09:00  INFO 21520 --- [api-service] [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-12-04T14:59:58.913+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-10] c.s.a.controller.TimerController         : 타이머 생성 요청: TimerCreateReq[targetTime=2025-12-04T06:59:58Z]
+2025-12-04T14:59:58.916+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-10] c.s.a.service.impl.TimerServiceImpl      : 신규 타이머 생성: timerId=e29bad52-9b19-470a-83b1-bb8db902c918, ownerToken=aaa4a7ec-4c52-40a5-9e41-06a7ab5345aa
+2025-12-04T14:59:58.917+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-10] c.s.apiservice.handler.TimerHandler      : Timer(e29bad52-9b19-470a-83b1-bb8db902c918)가 3600초 후에 만료되도록 설정되었습니다.
+2025-12-04T14:59:58.918+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timer */insert 
+    into
+        timers (created_at, owner_token, target_time, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-12-04T14:59:58.918+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T05:59:58.916412600Z]
+2025-12-04T14:59:58.919+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (2:UUID) <- [aaa4a7ec-4c52-40a5-9e41-06a7ab5345aa]
+2025-12-04T14:59:58.919+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:59:58Z]
+2025-12-04T14:59:58.919+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (4:TIMESTAMP_UTC) <- [2025-12-04T05:59:58.916412600Z]
+2025-12-04T14:59:58.919+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (5:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T14:59:58.922+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-10] c.s.a.controller.TimerController         : 타이머 생성 응답: TimerCreateRes[timerId=e29bad52-9b19-470a-83b1-bb8db902c918, ownerToken=aaa4a7ec-4c52-40a5-9e41-06a7ab5345aa]
+2025-12-04T15:00:02.064+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T15:00:02.064+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:02.067+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.SQL                        : 
+    select
+        t1_0.timer_id,
+        t1_0.id,
+        t1_0.captured_at,
+        t1_0.created_at,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timestamps t1_0 
+    where
+        t1_0.timer_id=?
+2025-12-04T15:00:02.067+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:14.106+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-3] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T15:00:14.106+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-3] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:14.109+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-3] org.hibernate.SQL                        : 
+    select
+        t1_0.timer_id,
+        t1_0.id,
+        t1_0.captured_at,
+        t1_0.created_at,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timestamps t1_0 
+    where
+        t1_0.timer_id=?
+2025-12-04T15:00:14.109+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-3] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:16.463+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T15:00:16.464+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:16.468+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-4] c.s.apiservice.handler.TimerHandler      : Timer(e29bad52-9b19-470a-83b1-bb8db902c918)에 타임스탬프가 추가되었습니다. 푸시 메시지 전송: {"timerId":"e29bad52-9b19-470a-83b1-bb8db902c918","type":"timestamp-added","payload":{"targetTime":"2025-12-04T06:59:58Z","capturedAt":"2025-12-04T06:00:16Z"}}
+2025-12-04T15:00:16.469+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timestamp */insert 
+    into
+        timestamps (captured_at, created_at, target_time, timer_id, updated_at) 
+    values
+        (?, ?, ?, ?, ?) 
+    returning id
+2025-12-04T15:00:16.469+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T06:00:16Z]
+2025-12-04T15:00:16.469+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2025-12-04T06:00:16.468881600Z]
+2025-12-04T15:00:16.469+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:59:58Z]
+2025-12-04T15:00:16.469+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.orm.jdbc.bind              : binding parameter (4:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:16.469+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-4] org.hibernate.orm.jdbc.bind              : binding parameter (5:TIMESTAMP_UTC) <- [2025-12-04T06:00:16.468881600Z]
+2025-12-04T15:00:17.697+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-6] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T15:00:17.698+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-6] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:17.701+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-6] c.s.apiservice.handler.TimerHandler      : Timer(e29bad52-9b19-470a-83b1-bb8db902c918)에 타임스탬프가 추가되었습니다. 푸시 메시지 전송: {"timerId":"e29bad52-9b19-470a-83b1-bb8db902c918","type":"timestamp-added","payload":{"targetTime":"2025-12-04T06:59:58Z","capturedAt":"2025-12-04T06:00:17Z"}}
+2025-12-04T15:00:17.702+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-6] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timestamp */insert 
+    into
+        timestamps (captured_at, created_at, target_time, timer_id, updated_at) 
+    values
+        (?, ?, ?, ?, ?) 
+    returning id
+2025-12-04T15:00:17.703+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-6] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T06:00:17Z]
+2025-12-04T15:00:17.703+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-6] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2025-12-04T06:00:17.702234800Z]
+2025-12-04T15:00:17.703+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-6] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:59:58Z]
+2025-12-04T15:00:17.703+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-6] org.hibernate.orm.jdbc.bind              : binding parameter (4:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:17.703+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-6] org.hibernate.orm.jdbc.bind              : binding parameter (5:TIMESTAMP_UTC) <- [2025-12-04T06:00:17.702234800Z]
+2025-12-04T15:00:18.617+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T15:00:18.617+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:18.619+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-8] c.s.apiservice.handler.TimerHandler      : Timer(e29bad52-9b19-470a-83b1-bb8db902c918)에 타임스탬프가 추가되었습니다. 푸시 메시지 전송: {"timerId":"e29bad52-9b19-470a-83b1-bb8db902c918","type":"timestamp-added","payload":{"targetTime":"2025-12-04T06:59:58Z","capturedAt":"2025-12-04T06:00:18Z"}}
+2025-12-04T15:00:18.621+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timestamp */insert 
+    into
+        timestamps (captured_at, created_at, target_time, timer_id, updated_at) 
+    values
+        (?, ?, ?, ?, ?) 
+    returning id
+2025-12-04T15:00:18.621+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T06:00:18Z]
+2025-12-04T15:00:18.621+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2025-12-04T06:00:18.620555300Z]
+2025-12-04T15:00:18.621+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:59:58Z]
+2025-12-04T15:00:18.621+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (4:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:18.621+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (5:TIMESTAMP_UTC) <- [2025-12-04T06:00:18.620555300Z]
+2025-12-04T15:00:23.358+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-5] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T15:00:23.359+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:23.362+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-5] c.s.apiservice.handler.TimerHandler      : Timer(e29bad52-9b19-470a-83b1-bb8db902c918)에 타임스탬프가 추가되었습니다. 푸시 메시지 전송: {"timerId":"e29bad52-9b19-470a-83b1-bb8db902c918","type":"timestamp-added","payload":{"targetTime":"2025-12-04T06:59:58Z","capturedAt":"2025-12-04T06:00:23Z"}}
+2025-12-04T15:00:23.363+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-5] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timestamp */insert 
+    into
+        timestamps (captured_at, created_at, target_time, timer_id, updated_at) 
+    values
+        (?, ?, ?, ?, ?) 
+    returning id
+2025-12-04T15:00:23.363+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T06:00:23Z]
+2025-12-04T15:00:23.363+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2025-12-04T06:00:23.362687900Z]
+2025-12-04T15:00:23.363+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:59:58Z]
+2025-12-04T15:00:23.363+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (4:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:23.363+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (5:TIMESTAMP_UTC) <- [2025-12-04T06:00:23.362687900Z]
+2025-12-04T15:00:23.963+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-9] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T15:00:23.963+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-9] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:23.965+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-9] c.s.apiservice.handler.TimerHandler      : Timer(e29bad52-9b19-470a-83b1-bb8db902c918)에 타임스탬프가 추가되었습니다. 푸시 메시지 전송: {"timerId":"e29bad52-9b19-470a-83b1-bb8db902c918","type":"timestamp-added","payload":{"targetTime":"2025-12-04T06:59:58Z","capturedAt":"2025-12-04T06:00:23Z"}}
+2025-12-04T15:00:23.966+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-9] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timestamp */insert 
+    into
+        timestamps (captured_at, created_at, target_time, timer_id, updated_at) 
+    values
+        (?, ?, ?, ?, ?) 
+    returning id
+2025-12-04T15:00:23.966+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-9] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T06:00:23Z]
+2025-12-04T15:00:23.966+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-9] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2025-12-04T06:00:23.965849700Z]
+2025-12-04T15:00:23.966+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-9] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:59:58Z]
+2025-12-04T15:00:23.966+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-9] org.hibernate.orm.jdbc.bind              : binding parameter (4:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:23.966+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-9] org.hibernate.orm.jdbc.bind              : binding parameter (5:TIMESTAMP_UTC) <- [2025-12-04T06:00:23.965849700Z]
+2025-12-04T15:00:24.747+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.owner_token,
+        t1_0.target_time,
+        t1_0.updated_at 
+    from
+        timers t1_0 
+    where
+        t1_0.id=?
+2025-12-04T15:00:24.747+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (1:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:24.750+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-10] c.s.apiservice.handler.TimerHandler      : Timer(e29bad52-9b19-470a-83b1-bb8db902c918)에 타임스탬프가 추가되었습니다. 푸시 메시지 전송: {"timerId":"e29bad52-9b19-470a-83b1-bb8db902c918","type":"timestamp-added","payload":{"targetTime":"2025-12-04T06:59:58Z","capturedAt":"2025-12-04T06:00:24Z"}}
+2025-12-04T15:00:24.750+09:00 DEBUG 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.SQL                        : 
+    /* insert for
+        com.sharetimer.apiservice.domain.Timestamp */insert 
+    into
+        timestamps (captured_at, created_at, target_time, timer_id, updated_at) 
+    values
+        (?, ?, ?, ?, ?) 
+    returning id
+2025-12-04T15:00:24.750+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2025-12-04T06:00:24Z]
+2025-12-04T15:00:24.750+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2025-12-04T06:00:24.750654700Z]
+2025-12-04T15:00:24.751+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [2025-12-04T06:59:58Z]
+2025-12-04T15:00:24.751+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (4:UUID) <- [e29bad52-9b19-470a-83b1-bb8db902c918]
+2025-12-04T15:00:24.751+09:00 TRACE 21520 --- [api-service] [http-nio-5000-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (5:TIMESTAMP_UTC) <- [2025-12-04T06:00:24.750654700Z]
+2025-12-04T15:04:51.954+09:00  INFO 21520 --- [api-service] [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration

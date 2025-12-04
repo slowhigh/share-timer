@@ -7,7 +7,7 @@ plugins {
 }
 
 allprojects {
-    group = "com.slowhigh"
+    group = "com.sharetimer"
     version = "0.0.1-SNAPSHOT"
 
     repositories {

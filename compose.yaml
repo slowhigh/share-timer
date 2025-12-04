@@ -13,26 +13,26 @@ services:
       retries: 5
       start_period: 30s
 
-  gateway-server:
+  api-gateway:
     build:
       context: ./server
-      dockerfile: ./gateway-server/Dockerfile
+      dockerfile: ./api-gateway/Dockerfile
     ports:
       - "8080:8080"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
+      - EUREKA_URI=http://discovery-server:8761/eureka/
     depends_on:
-      discovery-server:
-        condition: service_healthy
+      client:
+        condition: service_started
     networks:
       - timer-net
 
-  timer-service:
+  api-service:
     build:
       context: ./server
-      dockerfile: ./timer-service/Dockerfile
-    ports:
-      - "5000:5000"
+      dockerfile: ./api-service/Dockerfile
+    expose:
+      - "5000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/v1/actuator/health"]
       interval: 5s
@@ -40,8 +40,6 @@ services:
       start_period: 5s
       timeout: 10s
     depends_on:
-      discovery-server:
-        condition: service_healthy
       rdb:
         condition: service_healthy
       imdb:
@@ -49,22 +47,20 @@ services:
     networks:
       - timer-net
 
-  realtime-service:
+  sync-service:
     build:
       context: ./server
-      dockerfile: ./realtime-service/Dockerfile
-    ports:
-      - "5500:5500"
+      dockerfile: ./sync-service/Dockerfile
+    expose:
+      - "5500"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5500/event/v1/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:5500/sync/v1/actuator/health"]
       interval: 5s
       retries: 5
       start_period: 5s
       timeout: 10s
     depends_on:
-      discovery-server:
-        condition: service_healthy
-      timer-service:
+      api-service:
         condition: service_healthy
       imdb:
         condition: service_healthy
@@ -75,22 +71,20 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
-      gateway-server:
+      api-service:
         condition: service_healthy
-      timer-service:
-        condition: service_healthy
-      realtime-service:
+      sync-service:
         condition: service_healthy
     networks:
       - timer-net
 
   rdb:
     image: postgres:alpine
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     environment:
       POSTGRES_USER: timer
       POSTGRES_PASSWORD: timer1!
@@ -112,8 +106,8 @@ services:
       retries: 5
       start_period: 5s
       timeout: 10s
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
     networks:
       - timer-net
 
