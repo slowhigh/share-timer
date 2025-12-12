@@ -1,61 +1,90 @@
 services:
+  discovery-server:
+    build:
+      context: ./server
+      dockerfile: ./apps/discovery-server/Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - timer-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+
+  api-gateway:
+    build:
+      context: ./server
+      dockerfile: ./apps/api-gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_URI=http://discovery-server:8761/eureka/
+    depends_on:
+      client:
+        condition: service_started
+    networks:
+      - timer-net
+
+  api-service:
+    build:
+      context: ./server
+      dockerfile: ./apps/api-service/Dockerfile
+    expose:
+      - "5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/v1/actuator/health"]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 10s
+    depends_on:
+      rdb:
+        condition: service_healthy
+      imdb:
+        condition: service_healthy
+    networks:
+      - timer-net
+
+  sync-service:
+    build:
+      context: ./server
+      dockerfile: ./apps/sync-service/Dockerfile
+    expose:
+      - "5500"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5500/sync/v1/actuator/health"]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 10s
+    depends_on:
+      api-service:
+        condition: service_healthy
+      imdb:
+        condition: service_healthy
+    networks:
+      - timer-net
+
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
-      api-server:
+      api-service:
         condition: service_healthy
-        restart: true
-      realtime-server:
+      sync-service:
         condition: service_healthy
-        restart: true
+    networks:
+      - timer-net
 
-  api-server:
-    build: 
-      context: ./api-server
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
-    healthcheck:
-      test: "curl --fail --silent localhost:5000/api/v1/actuator/health | grep UP || exit 1"
-      interval: 5s
-      retries: 5
-      start_period: 5s
-      timeout: 10s
-    networks:
-      - timer-net
-    depends_on:
-      rdb:
-        condition: service_healthy
-        restart: true
-      imdb:
-        condition: service_started
-  
-  realtime-server:
-    build:
-      context: ./realtime-server
-      dockerfile: Dockerfile
-    healthcheck:
-      test: "curl --fail --silent localhost:5500/event/v1/actuator/health | grep UP || exit 1"
-      interval: 5s
-      retries: 5
-      start_period: 5s
-      timeout: 10s
-    ports:
-      - "5500:5500"
-    networks:
-      - timer-net
-    depends_on:
-      imdb:
-        condition: service_started
-      
   rdb:
     image: postgres:alpine
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     environment:
       POSTGRES_USER: timer
       POSTGRES_PASSWORD: timer1!
@@ -71,11 +100,17 @@ services:
 
   imdb:
     image: redis:alpine
-    ports:
-      - "6379:6379"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 10s
+    expose:
+      - "6379"
     networks:
       - timer-net
-    
+
 networks:
   timer-net:
     driver: bridge

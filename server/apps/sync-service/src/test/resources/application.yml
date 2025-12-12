@@ -1,0 +1,51 @@
+server:
+  port: 5500
+  servlet:
+    context-path: /sync/v1
+
+spring:
+  application:
+    name: sync-service
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+feign:
+  client:
+    timer-api:
+      url: http://localhost:5000/api/v1
+
+logging:
+  file:
+    name: logs/application.log
+    path: logs
+  level:
+    '[com.sharetimer.syncservice]': DEBUG
+    '[org.hibernate.tool.schema]': DEBUG
+    '[org.hibernate.SQL]': DEBUG
+    '[org.hibernate.orm.jdbc.bind]': TRACE
+
+springdoc:
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+
+timer:
+  owner-token-header: "X-Owner-Token"
+  expiration:
+    db-index: 0
+    key-prefix: "timer:end:"
+  pubsub:
+    db-index: 1
+    target-time-updated-channel: "timer:target-time-updated"
+    target-time-updated-message-type: "target-time-updated"
+    timestamp-added-channel: "timer:timestamp-added"
+    timestamp-added-message-type: "timestamp-added"
+    
+eureka:
+  client:
+    enabled: false
