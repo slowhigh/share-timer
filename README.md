@@ -20,7 +20,7 @@ The ShareTimer system is composed of the following main components:
 - **Client (Owner / Guest)** — Browser web UI. Opens an SSE stream to receive real‑time events; sends REST requests to modify timers.
 - **API Service** — HTTP REST endpoints for creating timers, adding timestamps, updating timers, and finding timers.
 - **Sync Service (SSE gateway)** — Exposes SSE endpoints for clients to subscribe to timer channels. Delivers ordered events, supports reconnection with `Heartbeat`, and acts as the pub/sub bridge.
-- **Api Gateway** — Act as the single entry point for all client requests. implemented with Spring Cloud Gateway, it routes traffic to the backend services (API Service, Sync Service) and handles cross-cutting concerns.
+- **API Gateway** — Act as the single entry point for all client requests. implemented with Spring Cloud Gateway, it routes traffic to the backend services (API Service, Sync Service) and handles cross-cutting concerns.
 - **Discovery Service** — Service registry server based on Netflix Eureka. It enables dynamic service registration and discovery, allowing microservices to locate each other without hardcoded URLs.
 - **PostgreSQL** — Durable storage for timer records and timestamp history.
 - **Redis** — Handles TTL-based expiration, pub/sub for notifying the Sync Service of events.
@@ -55,12 +55,14 @@ View the realtime event server’s Swagger documentation here:
 
 The user configures a timer and sends a creation request to the API Service.
 The server validates the input, stores the timer in PostgreSQL, and returns a unique shareable Id.
+
 ![Create Timer Sequence](./docs/start-timer-sequnce-diagram.png)
 
 ### Joining a Shared Timer
 
 Another user accesses the timer through its shared link.
 The Client retrieves timer details via the API Service and displays the synchronized countdown UI.
+
 ![Join Timer Sequence](./docs/share-timer-sequnce-diagram.png)
 
 ### Real-Time Synchronization
@@ -68,12 +70,13 @@ The Client retrieves timer details via the API Service and displays the synchron
 Clients connect to the Sync Service via SSE.
 When the owner adds a timestamp or changes the timer, the API Service updates the database and uses Redis to alert the Sync Service.
 All linked clients are instantly informed of any changes to the timer's status, guaranteeing shared real-time consistency.
+
 ![Realtime Sync Sequence 1](./docs/add-timestamp-sequnce-diagram.png)
 ![Realtime Sync Sequence 2](./docs/update-timer-sequnce-diagram.png)
-
 
 ### Timer Expiration & Notification
 
 When the countdown reaches zero, Redis triggers an expiration event.
 Every client modifies their UI in response to a timer-expired event published by the Sync Service.
+
 ![Expiration Sequence](./docs/expire-timer-sequnce-diagram.png)
