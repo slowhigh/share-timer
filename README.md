@@ -17,13 +17,15 @@ Whether you're coordinating an online study session, managing a team sprint, or 
 ## ⚙️ Architecture Overview
 
 The ShareTimer system is composed of the following main components:
-- **Client (Owner / Guest)** — Browser web UI. Opens an SSE stream to receive real‑time events; sends REST requests to modify timers.
-- **API Service** — HTTP REST endpoints for creating timers, adding timestamps, updating timers, and finding timers.
-- **Sync Service (SSE gateway)** — Exposes SSE endpoints for clients to subscribe to timer channels. Delivers ordered events, supports reconnection with `Heartbeat`, and acts as the pub/sub bridge.
-- **Api Gateway** — Act as the single entry point for all client requests. implemented with Spring Cloud Gateway, it routes traffic to the backend services (API Service, Sync Service) and handles cross-cutting concerns.
-- **Discovery Service** — Service registry server based on Netflix Eureka. It enables dynamic service registration and discovery, allowing microservices to locate each other without hardcoded URLs.
-- **PostgreSQL** — Durable storage for timer records and timestamp history.
-- **Redis** — Handles TTL-based expiration, pub/sub for notifying the Sync Service of events.
+- **Client (Owner / Guest)** — Front-end web application. Opens an SSE stream for real‑time events and sends REST requests to manage timers.
+- **API Service** — Core business logic service. Provides REST endpoints for creating, updating, and retrieving timers and timestamps.
+- **Sync Service (SSE Gateway)** — Real-time event handler. Exposes SSE endpoints for client subscriptions, delivers ordered events, and bridges internal pub/sub messages.
+- **API Gateway** — Unified entry point. Built with Spring Cloud Gateway, it routes traffic to backend services and handles cross-cutting concerns.
+- **Discovery Service** — Service registry based on Netflix Eureka. Enables dynamic registration and discovery, allowing services to communicate without hardcoded URLs.
+- **PostgreSQL** — Durable relational database. Stores persistent data including timer configurations and timestamp history.
+- **Redis** — In-memory data store. Manages TTL-based expiration and acts as a pub/sub message broker for real-time synchronization.
+- **Prometheus** — Monitoring and metrics collection. Tracks service performance and provides visibility into system health.
+- **Grafana** — Visualization tool. Displays metrics and provides a user-friendly interface for monitoring system performance.
 
 ---
 
@@ -36,16 +38,26 @@ docker compose up -d
 
 ### 🌐 Access the Web Interface
 Once the containers are running, open your browser and navigate to:
-- **Web Client**: http://localhost:3000/
+- http://localhost:8080/
 
 ### 📘 API Documentation
 #### API Service Documentation
-Access the main API server’s Swagger documentation at:
-- http://localhost:5000/api/v1/swagger-ui/index.html
+Access the main API Service’s Swagger documentation at:
+- http://localhost:8080/api/v1/swagger-ui/index.html
 
 #### Sync Service Documentation
-View the realtime event server’s Swagger documentation here:
-- http://localhost:5500/event/v1/swagger-ui/index.html
+View the Sync Service’s Swagger documentation here:
+- http://localhost:8080/sync/v1/swagger-ui/index.html
+
+### 🔭Monitoring
+Access the Eureka dashboard at:
+- http://localhost:8761/
+
+Access the Prometheus dashboard at:
+- http://localhost:9090/targets
+
+Access the Grafana dashboard at:
+- http://localhost:3000/
 
 ---
 

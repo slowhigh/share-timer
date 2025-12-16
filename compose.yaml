@@ -2,7 +2,7 @@ services:
   discovery-server:
     build:
       context: ./server
-      dockerfile: ./apps/discovery-server/Dockerfile
+      dockerfile: ../docker/discovery-server.Dockerfile
     ports:
       - "8761:8761"
     networks:
@@ -16,7 +16,7 @@ services:
   api-gateway:
     build:
       context: ./server
-      dockerfile: ./apps/api-gateway/Dockerfile
+      dockerfile: ../docker/api-gateway.Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -30,7 +30,7 @@ services:
   api-service:
     build:
       context: ./server
-      dockerfile: ./apps/api-service/Dockerfile
+      dockerfile: ../docker/api-service.Dockerfile
     expose:
       - "5000"
     healthcheck:
@@ -50,7 +50,7 @@ services:
   sync-service:
     build:
       context: ./server
-      dockerfile: ./apps/sync-service/Dockerfile
+      dockerfile: ../docker/sync-service.Dockerfile
     expose:
       - "5500"
     healthcheck:
@@ -70,7 +70,7 @@ services:
   client:
     build:
       context: ./client
-      dockerfile: Dockerfile
+      dockerfile: ../docker/client.Dockerfile
     expose:
       - "3000"
     depends_on:
@@ -110,6 +110,33 @@ services:
       - "6379"
     networks:
       - timer-net
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./docker/configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - timer-net
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    volumes:
+      - ./docker/configs/grafana/provisioning:/etc/grafana/provisioning
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    networks:
+      - timer-net
+    restart: always
 
 networks:
   timer-net:
