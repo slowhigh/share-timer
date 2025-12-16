@@ -27,6 +27,49 @@ The ShareTimer system is composed of the following main components:
 - **Prometheus** — Monitoring and metrics collection. Tracks service performance and provides visibility into system health.
 - **Grafana** — Visualization tool. Displays metrics and provides a user-friendly interface for monitoring system performance.
 
+```mermaid
+graph TD
+    %% Nodes
+    Client[Client Web App]
+    subgraph "Infrastructure"
+        Gateway[API Gateway]
+        Discovery[Discovery Service]
+    end
+    
+    subgraph "Microservices"
+        API[API Service]
+        Sync[Sync Service]
+    end
+    
+    subgraph "Persistence"
+        PG[(PostgreSQL)]
+        Redis[(Redis)]
+    end
+    
+    subgraph "Observability"
+        Prometheus[Prometheus]
+        Grafana[Grafana]
+    end
+
+    %% Connections
+    Client -- "REST / SSE" --> Gateway
+    Gateway -- "Route / Load Balance" --> API
+    Gateway -- "Route SSE" --> Sync
+    
+    API -- "Read/Write" --> PG
+    API -- "Publish Events" --> Redis
+    Sync -- "Subscribe Events" --> Redis
+    
+    API -. "Register" .-> Discovery
+    Sync -. "Register" .-> Discovery
+    Gateway -. "Discover" .-> Discovery
+    
+    Prometheus -- "Scrape Metrics" --> Gateway
+    Prometheus -- "Scrape Metrics" --> API
+    Prometheus -- "Scrape Metrics" --> Sync
+    Grafana -- "Visualize" --> Prometheus
+```
+
 ---
 
 ## 💡 How to Run

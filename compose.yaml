@@ -5,13 +5,14 @@ services:
       dockerfile: ../docker/discovery-server.Dockerfile
     ports:
       - "8761:8761"
-    networks:
-      - timer-net
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
       interval: 10s
       retries: 5
       start_period: 30s
+    networks:
+      - timer-net
+    restart: unless-stopped
 
   api-gateway:
     build:
@@ -26,6 +27,7 @@ services:
         condition: service_started
     networks:
       - timer-net
+    restart: unless-stopped
 
   api-service:
     build:
@@ -46,6 +48,7 @@ services:
         condition: service_healthy
     networks:
       - timer-net
+    restart: unless-stopped
 
   sync-service:
     build:
@@ -66,6 +69,7 @@ services:
         condition: service_healthy
     networks:
       - timer-net
+    restart: unless-stopped
 
   client:
     build:
@@ -80,6 +84,7 @@ services:
         condition: service_healthy
     networks:
       - timer-net
+    restart: unless-stopped
 
   rdb:
     image: postgres:alpine
@@ -97,6 +102,7 @@ services:
       timeout: 10s
     networks:
       - timer-net
+    restart: unless-stopped
 
   imdb:
     image: redis:alpine
@@ -110,6 +116,7 @@ services:
       - "6379"
     networks:
       - timer-net
+    restart: unless-stopped
 
   prometheus:
     image: prom/prometheus:latest
@@ -120,7 +127,7 @@ services:
       - "9090:9090"
     networks:
       - timer-net
-    restart: always
+    restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
@@ -136,7 +143,7 @@ services:
       - prometheus
     networks:
       - timer-net
-    restart: always
+    restart: unless-stopped
 
 networks:
   timer-net:
