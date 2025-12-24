@@ -1,7 +1,7 @@
 package com.sharetimer.apiservice.domain.model;
 
 import java.time.Instant;
-import com.sharetimer.core.common.domain.BaseTimeEntity;
+import com.sharetimer.core.common.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @ToString(exclude = "timer")
-public class Timestamp extends BaseTimeEntity {
+public class Timestamp extends BaseEntity {
 
   /** PK, 자동 증가 */
   @Id

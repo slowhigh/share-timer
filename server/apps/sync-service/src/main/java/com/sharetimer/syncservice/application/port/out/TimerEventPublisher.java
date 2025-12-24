@@ -1,10 +1,11 @@
 package com.sharetimer.syncservice.application.port.out;
 
 import java.time.Instant;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.http.codec.ServerSentEvent;
+import reactor.core.publisher.Flux;
 
-public interface ConnectionPort {
-  SseEmitter add(String timerId, SseEmitter emitter);
+public interface TimerEventPublisher {
+  Flux<ServerSentEvent<Object>> subscribe(String timerId);
 
   void sendTimerEndEvent(String timerId);
 

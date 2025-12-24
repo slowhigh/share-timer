@@ -1,4 +1,4 @@
-package com.sharetimer.web;
+package com.sharetimer.web.support;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -34,12 +34,15 @@ springdoc:
   swagger-ui:
     path: /swagger-ui
 
+webclient:
+  timer-api-url: http://localhost:5000/api/v1
+
 timer:
   owner-token-header: "X-Owner-Token"
   expiration:
     db-index: 0
     key-prefix: "timer:end:"
-  pubsub:
+  pub-sub:
     db-index: 1
     target-time-updated-channel: "timer:target-time-updated"
     target-time-updated-message-type: "target-time-updated"

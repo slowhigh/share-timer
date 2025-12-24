@@ -1,4 +1,4 @@
-package com.sharetimer.core.common.dto;
+package com.sharetimer.common.dto;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

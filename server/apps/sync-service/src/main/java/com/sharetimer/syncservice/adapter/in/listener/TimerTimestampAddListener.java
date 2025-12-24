@@ -1,5 +1,6 @@
 package com.sharetimer.syncservice.adapter.in.listener;
 
+import java.util.Objects;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -27,8 +28,11 @@ public class TimerTimestampAddListener implements MessageListener {
 
   @PostConstruct
   public void init() {
-    String topic = String.format("%s:%s", env.getActiveProfiles()[0],
-        timerProps.getPubSub().getTimestampAddedChannel());
+    String[] profiles = env.getActiveProfiles();
+    String profile = (profiles != null && profiles.length > 0) ? profiles[0] : "local";
+
+    String topic = Objects.requireNonNull(
+        String.format("%s:%s", profile, timerProps.getPubSub().getTimestampAddedChannel()));
 
     log.debug("subscribe topic: {}", topic);
 

@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import com.sharetimer.core.common.domain.BaseTimeEntity;
+import com.sharetimer.core.common.domain.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,7 +32,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @ToString(exclude = "timestamps")
-public class Timer extends BaseTimeEntity {
+public class Timer extends BaseEntity {
 
   /** PK, UUID */
   @Id

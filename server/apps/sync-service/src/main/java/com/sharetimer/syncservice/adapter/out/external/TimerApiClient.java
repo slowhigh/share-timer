@@ -1,13 +1,20 @@
 package com.sharetimer.syncservice.adapter.out.external;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
+import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Mono;
 
-@FeignClient(name = "timer-api-client", url = "${feign.client.timer-api.url}")
-public interface TimerApiClient {
+@Component
+@RequiredArgsConstructor
+public class TimerApiClient {
 
-  @DeleteMapping("/timers/{timerId}")
-  void deleteTimer(@PathVariable("timerId") String timerId);
+  @Qualifier("timerWebClient")
+  private final WebClient webClient;
+
+  public Mono<Void> deleteTimer(String timerId) {
+    return webClient.delete().uri("/timers/" + timerId).retrieve().bodyToMono(Void.class);
+  }
 
 }

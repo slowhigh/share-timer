@@ -1,12 +1,11 @@
 package com.sharetimer.syncservice.adapter.in.web;
 
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import com.sharetimer.syncservice.adapter.out.web.dto.TargetTimeUpdateEvent;
 import com.sharetimer.syncservice.adapter.out.web.dto.TimerEndEvent;
 import com.sharetimer.syncservice.adapter.out.web.dto.TimestampAddedEvent;
@@ -17,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/timers")
@@ -37,8 +37,7 @@ public class TimerController {
       - `event: timerNotFound`: 타이머가 존재하지 않음
       """, content = @Content(mediaType = MediaType.TEXT_EVENT_STREAM_VALUE, schema = @Schema(
       oneOf = {TargetTimeUpdateEvent.class, TimerEndEvent.class, TimestampAddedEvent.class}))),})
-  public ResponseEntity<SseEmitter> subscribeEvents(@PathVariable String timerId) {
-    SseEmitter emitter = timerUseCase.subscribe(timerId);
-    return ResponseEntity.ok(emitter);
+  public Flux<ServerSentEvent<Object>> subscribeEvents(@PathVariable String timerId) {
+    return timerUseCase.subscribe(timerId);
   }
 }

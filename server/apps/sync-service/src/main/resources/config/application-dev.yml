@@ -11,11 +11,6 @@ spring:
       host: imdb
       port: 6379
 
-feign:
-  client:
-    timer-api:
-      url: http://api-service:5000/api/v1
-
 logging:
   file:
     name: logs/application.log
@@ -35,15 +30,21 @@ springdoc:
     path: /swagger-ui
 
 timer:
-  expiration:
-    db-index: 0
-    key-prefix: "timer:end:"
-  pubsub:
-    db-index: 1
-    target-time-updated-channel: "timer:target-time-updated"
-    target-time-updated-message-type: "target-time-updated"
-    timestamp-added-channel: "timer:timestamp-added"
-    timestamp-added-message-type: "timestamp-added"
+  web:
+    owner-token-header: "X-Owner-Token"
+  redis:
+    expiration:
+      db-index: 0
+      key-prefix: "timer:end:"
+    pubsub:
+      target-time-updated-channel: "timer:target-time-updated"
+      target-time-updated-message-type: "target-time-updated"
+      timestamp-added-channel: "timer:timestamp-added"
+      timestamp-added-message-type: "timestamp-added"
+
+webclient:
+  timer-api:
+    url: http://api-service:5000/api/v1
 
 eureka:
   client:
