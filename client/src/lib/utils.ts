@@ -1,6 +1,6 @@
 /**
- * 밀리초 → HH:mm:ss
- * @param milliseconds 밀리초
+ * Milliseconds to HH:mm:ss
+ * @param milliseconds milliseconds
  */
 export const formatDuration = (milliseconds: number): string => {
   if (milliseconds < 0) milliseconds = 0;
@@ -14,8 +14,8 @@ export const formatDuration = (milliseconds: number): string => {
 };
 
 /**
- * ISO → YYYY-MM-DDTHH:mm:ssZ
- * @param isoString ISO 8601
+ * ISO to YYYY-MM-DDTHH:mm:ssZ
+ * @param isoString ISO 8601 string
  */
 export const formatIsoDateTime = (isoString: string): string => {
   const date = new Date(isoString);
@@ -29,7 +29,7 @@ export const formatIsoDateTime = (isoString: string): string => {
 };
 
 /**
- * 현재 UTC → YYYY-MM-DDTHH:mm:ssZ
+ * Current UTC to YYYY-MM-DDTHH:mm:ssZ
  */
 export const getCurrentIsoDateTime = (): string => {
   return new Date().toISOString().split(".")[0] + "Z";

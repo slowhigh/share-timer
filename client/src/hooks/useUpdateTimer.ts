@@ -8,7 +8,7 @@ import { AxiosError } from "axios";
 const updateTimerFn = async (params: { timerId: string; newTargetTime: string }) => {
   const ownerToken = localStorage.getItem(LOCAL_STORAGE_TIMER_OWNER_TOKEN_KEY);
   if (!ownerToken) {
-    alert("소유자 토큰이 없어 업데이트할 수 없습니다.");
+    alert("Cannot update without owner token.");
     return;
   }
   const requestBody: TimerUpdateRequest = {
@@ -23,12 +23,12 @@ const updateTimerFn = async (params: { timerId: string; newTargetTime: string })
 export const useUpdateTimer = (timerId: string | null, onSuccess: () => void) => {
   const { mutate, isPending: isUpdating } = useMutation({
     mutationFn: (newTargetTime: string) => {
-      if (!timerId) throw new Error("Timer ID가 없습니다.");
+      if (!timerId) throw new Error("Timer ID is missing.");
       return updateTimerFn({ timerId, newTargetTime });
     },
     onSuccess,
     onError: (err: AxiosError<ErrorResponse>) => {
-      const message = err.response?.data?.message || "타이머 업데이트에 실패했습니다.";
+      const message = err.response?.data?.message || "Failed to update timer.";
       alert(message);
       console.error("Failed to update timer:", err);
     },

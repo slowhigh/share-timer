@@ -1,9 +1,10 @@
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     java
-    id("org.springframework.boot") version "3.3.5" apply false
-    id("io.spring.dependency-management") version "1.1.6" apply false
+    alias(libs.plugins.spring.boot) apply false
+    alias(libs.plugins.spring.dependency.management) apply false
 }
 
 allprojects {
@@ -16,31 +17,33 @@ allprojects {
 }
 
 subprojects {
+    val libs = rootProject.libs
+
     apply(plugin = "java")
     apply(plugin = "io.spring.dependency-management")
 
-    // Apply Spring Boot plugin only to apps (leaf projects), not libs or container
-    if (project.path.startsWith(":apps") && project.name != "apps") {
-        apply(plugin = "org.springframework.boot")
-    }
-
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
+            languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
         }
     }
 
     configure<DependencyManagementExtension> {
         imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.5")
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.3")
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${libs.versions.springBoot.get()}")
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${libs.versions.springCloud.get()}")
         }
     }
 
     dependencies {
-        compileOnly("org.projectlombok:lombok")
-        annotationProcessor("org.projectlombok:lombok")
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
+        compileOnly(libs.lombok)
+        annotationProcessor(libs.lombok)
+        testCompileOnly(libs.lombok)
+        testAnnotationProcessor(libs.lombok)
+
+        annotationProcessor(libs.spring.boot.configuration.processor)
+
+        testImplementation(libs.spring.boot.starter.test)
     }
 
     tasks.withType<Test> {
@@ -50,9 +53,16 @@ subprojects {
     tasks.withType<JavaCompile> {
         options.compilerArgs.add("-parameters")
     }
-    
-    // Disable bootJar for libs
-    if (project.path.startsWith(":libs")) {
+
+    if (path.startsWith(":apps")) {
+        apply(plugin = "org.springframework.boot")
+
+        dependencies {
+            add("developmentOnly", libs.spring.boot.devtools)
+        }
+    }
+
+    if (path.startsWith(":libs")) {
         tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
             enabled = false
         }

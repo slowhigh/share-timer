@@ -7,5 +7,5 @@ export const DATETIME_LOCAL_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
 
 export const STALE_TIME = 1000 * 60 * 5;
 
-export const MSG_SHARE_LINK_COPIED = "공유 링크가 복사되었습니다.";
-export const MSG_INVALID_DATE_FORMAT = "잘못된 형식입니다. 'YYYY-MM-DDTHH:mm:ss' 형식으로 입력해주세요."; 
+export const MSG_SHARE_LINK_COPIED = "Share link copied.";
+export const MSG_INVALID_DATE_FORMAT = "Invalid format. Please enter in 'YYYY-MM-DDTHH:mm:ss' format."; 

@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <Suspense fallback={<div className="flex flex-col items-center justify-center min-h-screen">로딩 중...</div>}>
+          <Suspense fallback={<div className="flex flex-col items-center justify-center min-h-screen">Loading...</div>}>
             {children}
           </Suspense>
         </Providers>

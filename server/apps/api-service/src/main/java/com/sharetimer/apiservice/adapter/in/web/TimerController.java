@@ -22,8 +22,8 @@ import com.sharetimer.apiservice.application.port.in.command.CreateTimerCommand;
 import com.sharetimer.apiservice.application.port.in.command.DeleteTimerCommand;
 import com.sharetimer.apiservice.application.port.in.command.GetTimerCommand;
 import com.sharetimer.apiservice.application.port.in.command.UpdateTimerCommand;
-import com.sharetimer.core.common.dto.BaseRes;
-import com.sharetimer.core.common.exception.ErrorRes;
+import com.sharetimer.web.support.dto.BaseRes;
+import com.sharetimer.web.support.dto.ErrorRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -42,40 +42,40 @@ public class TimerController {
   private final TimerUseCase timerUseCase;
 
   @PostMapping
-  @Operation(operationId = "createTimer", summary = "타이머 생성", description = "새로운 타이머를 생성합니다.",
-      tags = {"Timer"})
-  @ApiResponse(responseCode = "201", description = "타이머 생성 성공")
-  @ApiResponse(responseCode = "400", description = "타이머 생성 실패",
+  @Operation(operationId = "createTimer", summary = "Create Timer",
+      description = "Create a new timer.", tags = {"Timer"})
+  @ApiResponse(responseCode = "201", description = "Timer creation successful")
+  @ApiResponse(responseCode = "400", description = "Timer creation failed",
       content = {@Content(schema = @Schema(implementation = ErrorRes.class))})
   public ResponseEntity<BaseRes<TimerCreateRes>> createTimer(
       @RequestBody @Valid TimerCreateReq timerCreateReq) {
-    log.debug("타이머 생성 요청: {}", timerCreateReq);
+    log.debug("Timer creation requested: {}", timerCreateReq);
 
     CreateTimerCommand command = new CreateTimerCommand(timerCreateReq.targetTime());
     TimerCreateRes data = timerUseCase.createTimer(command);
 
-    log.debug("타이머 생성 응답: {}", data);
+    log.debug("Timer creation response: {}", data);
     return BaseRes.of(HttpStatus.CREATED, data);
   }
 
   @GetMapping("/{timerId}")
-  @Operation(operationId = "getTimerInfo", summary = "타이머 정보 조회", description = "타이머 정보를 조회합니다.",
-      tags = {"Timer"})
-  @ApiResponse(responseCode = "200", description = "타이머 정보 조회 성공")
-  @ApiResponse(responseCode = "404", description = "타이머 정보 조회 실패",
+  @Operation(operationId = "getTimerInfo", summary = "Get Timer Info",
+      description = "Retrieve timer information.", tags = {"Timer"})
+  @ApiResponse(responseCode = "200", description = "Timer info retrieval successful")
+  @ApiResponse(responseCode = "404", description = "Timer info retrieval failed",
       content = {@Content(schema = @Schema(implementation = ErrorRes.class))})
   public ResponseEntity<BaseRes<TimerInfoRes>> getTimerInfo(@PathVariable String timerId,
-      @RequestHeader(name = "${timer.owner-token-header}") @Nullable String ownerToken) {
+      @RequestHeader(name = "${timer.web.owner-token-header}") @Nullable String ownerToken) {
     GetTimerCommand command = new GetTimerCommand(timerId, ownerToken);
     TimerInfoRes data = timerUseCase.getTimerInfo(command);
     return BaseRes.of(HttpStatus.OK, data);
   }
 
   @DeleteMapping("/{timerId}")
-  @Operation(operationId = "deleteTimer", summary = "타이머 삭제", description = "타이머를 삭제합니다.",
+  @Operation(operationId = "deleteTimer", summary = "Delete Timer", description = "Delete a timer.",
       tags = {"Timer"})
-  @ApiResponse(responseCode = "204", description = "타이머 삭제 성공")
-  @ApiResponse(responseCode = "404", description = "타이머 삭제 실패",
+  @ApiResponse(responseCode = "204", description = "Timer deletion successful")
+  @ApiResponse(responseCode = "404", description = "Timer deletion failed",
       content = {@Content(schema = @Schema(implementation = ErrorRes.class))})
   public ResponseEntity<Void> deleteTimer(@PathVariable String timerId) {
     timerUseCase.deleteTimer(new DeleteTimerCommand(timerId));
@@ -83,17 +83,17 @@ public class TimerController {
   }
 
   @PutMapping("/{timerId}")
-  @Operation(operationId = "updateTimer", summary = "타이머 업데이트", description = "타이머를 업데이트합니다.",
+  @Operation(operationId = "updateTimer", summary = "Update Timer", description = "Update a timer.",
       tags = {"Timer"})
-  @ApiResponse(responseCode = "202", description = "타이머 업데이트 요청 성공")
-  @ApiResponse(responseCode = "400", description = "타이머 업데이트 요청 실패",
+  @ApiResponse(responseCode = "202", description = "Timer update request successful")
+  @ApiResponse(responseCode = "400", description = "Timer update request failed",
       content = {@Content(schema = @Schema(implementation = ErrorRes.class))})
-  @ApiResponse(responseCode = "403", description = "타이머 업데이트 권한이 없음",
+  @ApiResponse(responseCode = "403", description = "No permission to update timer",
       content = {@Content(schema = @Schema(implementation = ErrorRes.class))})
-  @ApiResponse(responseCode = "404", description = "타이머가 없거나 종료됨",
+  @ApiResponse(responseCode = "404", description = "Timer not found or expired",
       content = {@Content(schema = @Schema(implementation = ErrorRes.class))})
   public ResponseEntity<BaseRes<Void>> updateTimer(@PathVariable String timerId,
-      @RequestHeader(name = "${timer.owner-token-header}") String ownerToken,
+      @RequestHeader(name = "${timer.web.owner-token-header}") String ownerToken,
       @RequestBody @Valid TimerUpdateReq timerUpdateReq) {
     timerUseCase.updateTimer(new UpdateTimerCommand(timerId, ownerToken,
         timerUpdateReq.requestTime(), timerUpdateReq.targetTime()));
@@ -101,12 +101,12 @@ public class TimerController {
   }
 
   @PostMapping("/{timerId}/timestamps")
-  @Operation(operationId = "addTimestamp", summary = "타임스탬프 추가", description = "타임스탬프를 추가합니다.",
-      tags = {"Timer"})
-  @ApiResponse(responseCode = "202", description = "타임스탬프 추가 요청 성공")
-  @ApiResponse(responseCode = "400", description = "타임스탬프 추가 요청 실패",
+  @Operation(operationId = "addTimestamp", summary = "Add Timestamp",
+      description = "Add a timestamp.", tags = {"Timer"})
+  @ApiResponse(responseCode = "202", description = "Timestamp addition request successful")
+  @ApiResponse(responseCode = "400", description = "Timestamp addition request failed",
       content = {@Content(schema = @Schema(implementation = ErrorRes.class))})
-  @ApiResponse(responseCode = "404", description = "타이머가 없거나 종료됨",
+  @ApiResponse(responseCode = "404", description = "Timer not found or expired",
       content = {@Content(schema = @Schema(implementation = ErrorRes.class))})
   public ResponseEntity<BaseRes<Void>> addTimestamp(@PathVariable String timerId,
       @RequestBody @Valid TimerAddTimestampReq timerAddTimestampReq) {

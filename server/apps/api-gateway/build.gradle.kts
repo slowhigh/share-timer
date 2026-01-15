@@ -1,6 +1,5 @@
 dependencies {
-    implementation("org.springframework.cloud:spring-cloud-starter-gateway")
-    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("io.micrometer:micrometer-registry-prometheus")
+    implementation(libs.spring.cloud.starter.gateway)
+    implementation(libs.bundles.eureka.client)
+    implementation(libs.bundles.observability)
 }

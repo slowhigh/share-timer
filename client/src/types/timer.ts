@@ -1,5 +1,5 @@
 /**
- * 공통 응답 포맷
+ * Common Response Format
  */
 export interface BaseRes<T> {
   statusCode: string;
@@ -8,7 +8,7 @@ export interface BaseRes<T> {
 }
 
 /**
- * 에러 응답
+ * Error Response
  */
 export interface ErrorResponse {
   statusCode: string;
@@ -18,7 +18,7 @@ export interface ErrorResponse {
 
 /**
  * POST /timers
- * 타이머 생성 요청
+ * Request to create a timer
  */
 export interface TimerCreateRequest {
   targetTime: string;
@@ -26,7 +26,7 @@ export interface TimerCreateRequest {
 
 /**
  * POST /timers
- * 타이머 생성 응답 데이터
+ * Timer creation response data
  */
 export interface TimerCreateResponse {
   timerId: string;
@@ -35,7 +35,7 @@ export interface TimerCreateResponse {
 
 /**
  * GET /timers/{timerId}
- * 타임스탬프 정보
+ * Timestamp Information
  */
 export interface TimestampInfoResponse {
   targetTime: string;
@@ -44,7 +44,7 @@ export interface TimestampInfoResponse {
 
 /**
  * GET /timers/{timerId}
- * 타이머 상세 정보 응답 데이터
+ * Timer detail response data
  */
 export interface TimerInfoResponse {
   updatedAt: string;
@@ -56,7 +56,7 @@ export interface TimerInfoResponse {
 
 /**
  * PUT /timers/{timerId}
- * 타이머 업데이트 요청
+ * Request to update timer
  */
 export interface TimerUpdateRequest {
   requestTime: string;
@@ -65,7 +65,7 @@ export interface TimerUpdateRequest {
 
 /**
  * POST /timers/{timerId}/timestamps
- * 타임스탬프 추가 요청
+ * Request to add timestamp
  */
 export interface TimerAddTimestampRequest {
   capturedAt: string;
@@ -73,7 +73,7 @@ export interface TimerAddTimestampRequest {
 
 /**
  * SSE event: targetTimeUpdate
- * 기준 시각 변경 이벤트 데이터
+ * Target time update event data
  */
 export interface TargetTimeUpdateEventData {
   updatedAt: string;
@@ -83,7 +83,7 @@ export interface TargetTimeUpdateEventData {
 
 /**
  * SSE event: timestampAdd
- * 타임스탬프 추가 이벤트 데이터
+ * Timestamp added event data
  */
 export interface TimestampAddedEventData {
   targetTime: string;

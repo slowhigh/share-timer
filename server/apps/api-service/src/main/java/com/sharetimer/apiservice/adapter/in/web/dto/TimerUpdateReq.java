@@ -8,17 +8,19 @@ import jakarta.validation.constraints.NotNull;
 
 public record TimerUpdateReq(
 
-    /** 요청 시각(UTC) */
+    /** Request time (UTC) */
     @JsonProperty("requestTime") @JsonFormat(shape = JsonFormat.Shape.STRING,
-        pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC") @NotNull(
-            message = "'requestTime'은 필수 값입니다.") @Schema(name = "requestTime",
-                description = "요청 시각(UTC)", example = "2025-07-26T15:00:00Z") Instant requestTime,
+        pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",
+        timezone = "UTC") @NotNull(message = "'requestTime' is required.") @Schema(
+            name = "requestTime", description = "Request time (UTC)",
+            example = "2025-07-26T15:00:00Z") Instant requestTime,
 
-    /** 타이머의 기준 시각(UTC) */
+    /** Timer's target time (UTC) */
     @JsonProperty("targetTime") @JsonFormat(shape = JsonFormat.Shape.STRING,
         pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",
-        timezone = "UTC") @NotNull(message = "'targetTime'은 필수 값입니다.") @Schema(name = "targetTime",
-            description = "타이머의 기준 시각(UTC)", example = "2025-07-26T15:00:00Z") Instant targetTime
+        timezone = "UTC") @NotNull(message = "'targetTime' is required.") @Schema(
+            name = "targetTime", description = "Timer's target time (UTC)",
+            example = "2025-07-26T15:00:00Z") Instant targetTime
 
 ) {
 }

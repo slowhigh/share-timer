@@ -32,15 +32,15 @@ export default function Home() {
     <div className="flex flex-col justify-center min-h-screen">
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
         <div className="max-w-4xl mx-auto space-y-6">
-          {/* 헤더 */}
+          {/* Header */}
           <div className="text-center space-y-2">
             <div className="flex items-center justify-center gap-2">
               <Clock className="w-8 h-8 text-indigo-600" />
-              <h1 className="text-indigo-900">타이머를 생성해 주세요.</h1>
+              <h1 className="text-indigo-900">Please create a timer.</h1>
             </div>
           </div>
 
-          {/* 메인 타이머 카드 */}
+          {/* Main Timer Card */}
           <Card className="flex flex-col justify-center p-8 shadow-lg min-h-60">
             <div className="mx-auto">
               <TextField.Root
@@ -51,7 +51,7 @@ export default function Home() {
               />
 
               <Button onClick={handleCreate} disabled={isLoading} className="w-full mt-6">
-                {isLoading ? "생성 중..." : "생성"}
+                {isLoading ? "Creating..." : "Create"}
               </Button>
             </div>
           </Card>

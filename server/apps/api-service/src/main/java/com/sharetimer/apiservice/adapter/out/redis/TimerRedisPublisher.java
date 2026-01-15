@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharetimer.apiservice.adapter.out.redis.message.TimerAddTimestampMessage;
 import com.sharetimer.apiservice.adapter.out.redis.message.TimerUpdateTargetTimeMessage;
 import com.sharetimer.apiservice.application.port.out.TimerEventPort;
-import com.sharetimer.core.common.config.TimerProps;
+import com.sharetimer.storage.redis.config.TimerRedisProps;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TimerRedisPublisher implements TimerEventPort {
 
-  private final TimerProps timerProps;
+  private final TimerRedisProps timerRedisProps;
   private final ObjectMapper objectMapper;
   private final Environment env;
 
@@ -33,29 +33,29 @@ public class TimerRedisPublisher implements TimerEventPort {
   public void scheduleExpiration(String timerId, Instant targetTime) {
     long expireSecond = targetTime.getEpochSecond() - Instant.now().getEpochSecond();
     if (expireSecond > 0) {
-      String keyPrefix = timerProps.getExpiration().getKeyPrefix();
+      String keyPrefix = timerRedisProps.getExpiration().getKeyPrefix();
       String key = keyPrefix + timerId;
       timerExpirationRedisTemplate.opsForValue().set(key, "", expireSecond, TimeUnit.SECONDS);
-      log.debug("Timer({})가 {}초 후에 만료되도록 설정되었습니다.", timerId, expireSecond);
+      log.debug("Timer({}) is set to expire in {} seconds.", timerId, expireSecond);
     }
   }
 
   public void publishUpdateTimerTargetTime(String timerId, Instant updatedAt, Instant targetTime) {
-    String channel = timerProps.getPubSub().getTargetTimeUpdatedChannel();
+    String channel = timerRedisProps.getPubSub().getTargetTimeUpdatedChannel();
 
     TimerUpdateTargetTimeMessage message = new TimerUpdateTargetTimeMessage(timerId,
-        timerProps.getPubSub().getTargetTimeUpdatedMessageType(),
+        timerRedisProps.getPubSub().getTargetTimeUpdatedMessageType(),
         new TimerUpdateTargetTimeMessage.Payload(updatedAt, Instant.now(), targetTime));
 
     publishEvent(channel, message);
   }
 
   public void publishAddTimestamp(String timerId, Instant targetTime, Instant capturedAt) {
-    String channel = timerProps.getPubSub().getTimestampAddedChannel();
+    String channel = timerRedisProps.getPubSub().getTimestampAddedChannel();
 
-    TimerAddTimestampMessage message =
-        new TimerAddTimestampMessage(timerId, timerProps.getPubSub().getTimestampAddedMessageType(),
-            new TimerAddTimestampMessage.Payload(targetTime, capturedAt));
+    TimerAddTimestampMessage message = new TimerAddTimestampMessage(timerId,
+        timerRedisProps.getPubSub().getTimestampAddedMessageType(),
+        new TimerAddTimestampMessage.Payload(targetTime, capturedAt));
 
     publishEvent(channel, message);
   }
@@ -64,21 +64,21 @@ public class TimerRedisPublisher implements TimerEventPort {
     try {
       String jsonMessage = objectMapper.writeValueAsString(message);
       if (jsonMessage == null) {
-        log.error("메시지 직렬화 실패: 메시지가 null입니다.");
+        log.error("Message serialization failed: Message is null.");
         return;
       }
       String fullChannel = String.format("%s:%s", env.getActiveProfiles()[0], channel);
       if (fullChannel == null) {
-        log.error("채널 이름이 null입니다.");
+        log.error("Channel name is null.");
         return;
       }
 
       timerPubSubRedisTemplate.convertAndSend(fullChannel, jsonMessage);
-      log.debug("Redis publish 성공: channel={}, message={}", fullChannel, jsonMessage);
+      log.debug("Redis publish success: channel={}, message={}", fullChannel, jsonMessage);
     } catch (JsonProcessingException e) {
-      log.error("메시지 직렬화 실패: {}", e.getMessage());
+      log.error("Message serialization failed: {}", e.getMessage());
     } catch (Exception e) {
-      log.error("Redis publish 실패: channel={}, error={}", channel, e.getMessage());
+      log.error("Redis publish failed: channel={}, error={}", channel, e.getMessage());
     }
   }
 

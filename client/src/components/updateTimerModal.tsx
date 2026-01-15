@@ -27,7 +27,7 @@ export const UpdateTimerModal = ({ timerId, currentTargetTime, onClose }: Update
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md">
-        <h2 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">기준 시각 수정</h2>
+        <h2 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Edit Target Time</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -43,14 +43,14 @@ export const UpdateTimerModal = ({ timerId, currentTargetTime, onClose }: Update
               disabled={isUpdating}
               className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md disabled:opacity-50"
             >
-              취소
+              Cancel
             </button>
             <button
               type="submit"
               disabled={isUpdating}
               className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-400"
             >
-              {isUpdating ? "수정 중..." : "수정"}
+              {isUpdating ? "Updating..." : "Update"}
             </button>
           </div>
         </form>

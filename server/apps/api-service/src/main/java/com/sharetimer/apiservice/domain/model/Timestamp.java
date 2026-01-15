@@ -1,7 +1,7 @@
 package com.sharetimer.apiservice.domain.model;
 
 import java.time.Instant;
-import com.sharetimer.core.common.domain.BaseTimeEntity;
+import com.sharetimer.db.jpa.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * 타임스탬프 정보를 저장하는 엔티티 - Timestamp: Timer = N : 1
+ * Entity storing timestamp information - Timestamp: Timer = N : 1
  */
 @Entity
 @Table(name = "timestamps")
@@ -27,22 +27,22 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @ToString(exclude = "timer")
-public class Timestamp extends BaseTimeEntity {
+public class Timestamp extends BaseEntity {
 
-  /** PK, 자동 증가 */
+  /** PK, Auto-increment */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  /** 타임스탬프를 추가할 때 기준 시각(UTC) */
+  /** Base time when timestamp is added (UTC) */
   @Column(name = "target_time", nullable = false)
   private Instant targetTime;
 
-  /** 타임스탬프가 기록된 시각(UTC) */
+  /** Time when timestamp was recorded (UTC) */
   @Column(name = "captured_at", nullable = false)
   private Instant capturedAt;
 
-  /** 타임스탬프가 속한 타이머 */
+  /** Timer that owns the timestamp */
   @ManyToOne()
   @JoinColumn(name = "timer_id", nullable = false)
   private Timer timer;

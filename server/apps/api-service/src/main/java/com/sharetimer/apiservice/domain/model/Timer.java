@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import com.sharetimer.core.common.domain.BaseTimeEntity;
+import com.sharetimer.db.jpa.domain.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * 타이머 정보를 저장하는 엔티티 - Timer : Timestamp = 1 : N
+ * Entity storing timer information - Timer : Timestamp = 1 : N
  */
 @Entity
 @Table(name = "timers",
@@ -32,7 +32,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @ToString(exclude = "timestamps")
-public class Timer extends BaseTimeEntity {
+public class Timer extends BaseEntity {
 
   /** PK, UUID */
   @Id
@@ -40,15 +40,15 @@ public class Timer extends BaseTimeEntity {
   @Column(name = "id", length = 36)
   private UUID id;
 
-  /** 타이머의 기준 시각(UTC) */
+  /** Timer's target time (UTC) */
   @Column(name = "target_time", nullable = false)
   private Instant targetTime;
 
-  /** 타이머의 소유자 토큰 */
+  /** Timer's owner token */
   @Column(name = "owner_token", length = 36, unique = true, nullable = false)
   private UUID ownerToken;
 
-  /** 타이머에 속한 타임스탬프 목록 */
+  /** List of timestamps belonging to the timer */
   @Builder.Default
   @OneToMany(mappedBy = "timer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
   private List<Timestamp> timestamps = new ArrayList<>();

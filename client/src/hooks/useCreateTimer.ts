@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 const createTimerFn = async (data: TimerCreateRequest): Promise<TimerCreateResponse> => {
   const response = await axiosInstance.post<BaseRes<TimerCreateResponse>>("/timers", data);
   if (!response.data.data) {
-    throw new Error("타이머 생성 응답 데이터가 없습니다.");
+    throw new Error("No timer creation response data.");
   }
   return response.data.data;
 };
@@ -29,8 +29,8 @@ export const useCreateTimer = () => {
       router.push(`/live?id=${timerId}`);
     },
     onError: (err) => {
-      const message = err.response?.data?.message || "알 수 없는 오류가 발생했습니다.";
-      alert(`타이머 생성 실패: ${message}`);
+      const message = err.response?.data?.message || "Unknown error occurred.";
+      alert(`Failed to create timer: ${message}`);
       console.error("API call failed:", err);
     },
   });

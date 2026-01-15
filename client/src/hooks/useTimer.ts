@@ -14,7 +14,7 @@ const fetchTimerInfo = async (timerId: string): Promise<TimerInfoResponse> => {
   if (ownerToken) headers[OWNER_TOKEN_HEADER_KEY] = ownerToken;
 
   const { data } = await axiosInstance.get<BaseRes<TimerInfoResponse>>(`/timers/${timerId}`, { headers });
-  if (!data.data) throw new Error("타이머 정보를 찾을 수 없습니다.");
+  if (!data.data) throw new Error("Timer info not found.");
 
   data.data.timestamps.sort((a, b) => new Date(a.capturedAt).getTime() - new Date(b.capturedAt).getTime());
   return data.data;
@@ -39,7 +39,7 @@ export const useTimer = (timerId: string | null) => {
   useEffect(() => {
     if (error) {
       if (error.response?.status === 404) {
-        alert("타이머가 종료되었거나 없습니다.");
+        alert("Timer has ended or does not exist.");
         router.push("/");
       }
     }
@@ -83,7 +83,7 @@ export const useTimer = (timerId: string | null) => {
         });
       },
       onTimerEnd: () => {
-        alert("타이머 종료");
+        alert("Timer ended");
         setIsTimerEnded(true);
         sseService?.close();
       },

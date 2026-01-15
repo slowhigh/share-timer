@@ -7,16 +7,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * 타이머 생성 요청
+ * Timer creation request
  */
-@Schema(name = "Timer Create Request", description = "타이머 생성 요청")
+@Schema(name = "Timer Create Request", description = "Timer creation request")
 public record TimerCreateReq(
 
-    /** 타이머의 기준 시각(UTC) */
+    /** Timer's target time (UTC) */
     @JsonProperty("targetTime") @JsonFormat(shape = JsonFormat.Shape.STRING,
         pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",
-        timezone = "UTC") @NotNull(message = "'targetTime'은 필수 값입니다.") @Schema(name = "targetTime",
-            description = "타이머의 기준 시각(UTC)", example = "2025-07-26T15:00:00Z") Instant targetTime
+        timezone = "UTC") @NotNull(message = "'targetTime' is required.") @Schema(
+            name = "targetTime", description = "Timer's target time (UTC)",
+            example = "2025-07-26T15:00:00Z") Instant targetTime
 
 ) {
 }

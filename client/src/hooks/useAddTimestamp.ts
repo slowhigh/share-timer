@@ -11,11 +11,11 @@ const addTimestampFn = async (params: { timerId: string; requestBody: TimerAddTi
 export const useAddTimestamp = (timerId: string | null) => {
   const { mutate, isPending: isAdding } = useMutation({
     mutationFn: (requestBody: TimerAddTimestampRequest) => {
-      if (!timerId) throw new Error("Timer ID가 없습니다.");
+      if (!timerId) throw new Error("Timer ID is missing.");
       return addTimestampFn({ timerId, requestBody });
     },
     onError: (err: AxiosError<ErrorResponse>) => {
-      const message = err.response?.data?.message || "타임스탬프 추가에 실패했습니다.";
+      const message = err.response?.data?.message || "Failed to add timestamp.";
       alert(message);
       console.error("Failed to add timestamp:", err);
     },

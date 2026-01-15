@@ -5,16 +5,16 @@ Whether you're coordinating an online study session, managing a team sprint, or 
 
 ---
 
-## ✨ Features
+## Features
 
-- 🧭 **Create** — Set up timers in seconds with a clean, intuitive interface.  
-- 🔗 **Share** — Generate a unique link to share your timer with anyone, anywhere.  
-- ⏱️ **Sync (SSE)** — All timer events (updates, timestamp additions, and expirations) are synchronized to connected clients using Server‑Sent Events (SSE).
-- 💻 **Flexible** — Works on any device, no login required.
+- **Create** — Set up timers in seconds with a clean, intuitive interface.  
+- **Share** — Generate a unique link to share your timer with anyone, anywhere.  
+- **Sync (SSE)** — All timer events (updates, timestamp additions, and expirations) are synchronized to connected clients using Server‑Sent Events (SSE).
+- **Flexible** — Works on any device, no login required.
 
 ---
 
-## ⚙️ Architecture Overview
+## Architecture Overview
 
 The ShareTimer system is composed of the following main components:
 - **Client (Owner / Guest)** — Front-end web application. Opens an SSE stream for real‑time events and sends REST requests to manage timers.
@@ -72,18 +72,48 @@ graph TD
 
 ---
 
-## 💡 How to Run
-### 🚀 Using Docker Compose
+## Server Architecture
+
+The server codebase is structured as a **Monorepo** and follows **Hexagonal Architecture** principles to ensure maintainability and scalability.
+
+### Monorepo Structure
+
+The `server` directory is organized into `apps` and `libs`:
+
+- **apps/**: Contains deployable microservices.
+    - `api-service`: Core business logic.
+    - `sync-service`: Real-time SSE gateway.
+    - `api-gateway`, `discovery-server`: Infrastructure services.
+- **libs/**: Contains shared reusable libraries.
+    - `common`: Common utilities.
+    - `db-jpa`: Database persistence layers.
+    - `storage-redis`: Redis client and configuration.
+    - `web-support`: Shared web configuration and filters.
+
+### Hexagonal Architecture
+
+Services like `api-service` and `sync-service` are designed using Hexagonal Architecture (Ports and Adapters) to isolate core business logic from external dependencies.
+
+- **Domain Layer (`domain`)**: Contains the core business logic and entities. This layer has no dependencies on frameworks or external details.
+- **Application Layer (`application`)**: Orchestrates use cases (`port.in`) and defines interfaces for external resources (`port.out`).
+- **Adapter Layer (`adapter`)**: Implements the interfaces to interact with the outside world.
+    - **Inbound Adapters (`web`, `listener`)**: Handle REST API requests and message/event listeners.
+    - **Outbound Adapters (`persistence`, `redis`, `external`)**: Communicate with databases, message brokers, or external services.
+
+---
+
+## How to Run
+### Using Docker Compose
 To start the service with Docker, simply run the following command from the project root directory, where the compose.yaml file is located:
 ```
 docker compose up -d
 ```
 
-### 🌐 Access the Web Interface
+### Access the Web Interface
 Once the containers are running, open your browser and navigate to:
 - http://localhost:8080/
 
-### 📘 API Documentation
+### API Documentation
 #### API Service Documentation
 Access the main API Service’s Swagger documentation at:
 - http://localhost:8080/api/v1/swagger-ui/index.html
@@ -92,7 +122,7 @@ Access the main API Service’s Swagger documentation at:
 View the Sync Service’s Swagger documentation here:
 - http://localhost:8080/sync/v1/swagger-ui/index.html
 
-### 🔭Monitoring
+### Monitoring
 Access the Eureka dashboard at:
 - http://localhost:8761/
 
@@ -101,10 +131,10 @@ Access the Prometheus dashboard at:
 
 Access the Grafana dashboard at:
 - http://localhost:3000/
-
+- default account: admin / admin
 ---
 
-## 🔀 Sequence Diagrams
+## Sequence Diagrams
 
 ### Creating a Timer
 

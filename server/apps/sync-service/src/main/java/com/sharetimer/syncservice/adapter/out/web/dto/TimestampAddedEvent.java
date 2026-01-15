@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "'timestampAdded' 이벤트의 데이터 형식")
+@Schema(description = "Data format for 'timestampAdded' event")
 public class TimestampAddedEvent {
 
-  @Schema(description = "신규 기준 시간", example = "2025-07-08T15:00:00Z")
+  @Schema(description = "New target time", example = "2025-07-08T15:00:00Z")
   private Instant targetTime;
 
-  @Schema(description = "캡처된 시간", example = "2025-07-08T15:00:00Z")
+  @Schema(description = "Captured time", example = "2025-07-08T15:00:00Z")
   private Instant capturedAt;
 
 }

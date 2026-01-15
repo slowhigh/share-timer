@@ -2,18 +2,14 @@ package com.sharetimer.syncservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.openfeign.EnableFeignClients;
-import com.sharetimer.core.common.config.RedisProps;
-import com.sharetimer.core.common.config.TimerProps;
+import com.sharetimer.storage.redis.config.RedisProps;
+import com.sharetimer.storage.redis.config.TimerRedisProps;
 
-@EnableFeignClients
 @ConfigurationPropertiesScan
-@EnableConfigurationProperties({TimerProps.class, RedisProps.class})
-@SpringBootApplication(scanBasePackages = "com.sharetimer",
-    exclude = {DataSourceAutoConfiguration.class})
+@EnableConfigurationProperties({RedisProps.class, TimerRedisProps.class})
+@SpringBootApplication(scanBasePackages = "com.sharetimer")
 public class SyncServiceApplication {
 
   public static void main(String[] args) {

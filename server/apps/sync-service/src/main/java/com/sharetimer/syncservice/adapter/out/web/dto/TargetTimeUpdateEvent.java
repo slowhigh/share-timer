@@ -9,16 +9,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "'targetTimeUpdate' 이벤트의 데이터 형식")
+@Schema(description = "Data format for 'targetTimeUpdate' event")
 public class TargetTimeUpdateEvent {
 
-  @Schema(description = "갱신된 타임스탬프", example = "2025-07-08T15:00:00Z")
+  @Schema(description = "Updated timestamp", example = "2025-07-08T15:00:00Z")
   private Instant updatedAt;
 
-  @Schema(description = "서버 시간", example = "2025-07-08T15:00:00Z")
+  @Schema(description = "Server time", example = "2025-07-08T15:00:00Z")
   private Instant serverTime;
 
-  @Schema(description = "신규 기준 시간", example = "2025-07-08T15:00:00Z")
+  @Schema(description = "New target time", example = "2025-07-08T15:00:00Z")
   private Instant newTargetTime;
 
 }

@@ -1,6 +1,21 @@
 rootProject.name = "share-timer-backend"
 
-include("libs:core")
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
+include("libs:common")
+include("libs:db-jpa")
+include("libs:storage-redis")
 include("libs:web-support")
 include("apps:discovery-server")
 include("apps:api-gateway")

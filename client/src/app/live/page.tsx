@@ -25,14 +25,14 @@ export default function LivePage() {
   const [newTime, setNewTime] = useState("");
   const { updateTimer, isUpdating } = useUpdateTimer(timerId, () => setIsDialogOpen(false));
 
-  if (isLoading) return <div className="flex flex-col items-center justify-center min-h-screen">로딩 중...</div>;
+  if (isLoading) return <div className="flex flex-col items-center justify-center min-h-screen">Loading...</div>;
   if (error)
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-red-500">오류: {error.message}</div>
+      <div className="flex flex-col items-center justify-center min-h-screen text-red-500">Error: {error.message}</div>
     );
   if (!timerInfo)
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">타이머 정보를 찾을 수 없습니다.</div>
+      <div className="flex flex-col items-center justify-center min-h-screen">Timer information not found.</div>
     );
 
   const handleShare = () => {
@@ -52,21 +52,21 @@ export default function LivePage() {
     <div className="flex flex-col justify-center min-h-screen">
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
         <div className="max-w-4xl mx-auto space-y-6">
-          {/* 헤더 */}
+          {/* Header */}
           <div className="text-center space-y-2">
             <div className="flex items-center justify-center gap-2">
               <Clock className="w-8 h-8 text-indigo-600" />
-              <h1 className="text-indigo-900">타이머를 공유해 보세요.</h1>
+              <h1 className="text-indigo-900">Share your timer.</h1>
             </div>
           </div>
 
-          {/* 메인 타이머 카드 */}
+          {/* Main Timer Card */}
           <Card className="p-8 shadow-lg">
             <div className="space-y-6">
-              {/* 기준 시각 */}
+              {/* Target Time */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label className="text-gray-600">기준 시각</Label>
+                  <Label className="text-gray-600">Target Time</Label>
                   <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
                       <Button
@@ -76,16 +76,16 @@ export default function LivePage() {
                         onClick={() => setNewTime(formatIsoDateTime(timerInfo.targetTime).slice(0, -1))}
                       >
                         <Edit className="w-4 h-4 mr-2" />
-                        기준 시각 수정
+                        Edit Target Time
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>기준 시각 수정</DialogTitle>
+                        <DialogTitle>Edit Target Time</DialogTitle>
                       </DialogHeader>
                       <div className="space-y-4 pt-4">
                         <div className="space-y-2">
-                          <Label>기준 시각 (ISO 8601 형식)</Label>
+                          <Label>Target Time (ISO 8601)</Label>
                           <Input
                             type="text"
                             value={newTime}
@@ -95,7 +95,7 @@ export default function LivePage() {
                           />
                         </div>
                         <Button onClick={handleUpdateTimer} disabled={isUpdating} className="w-full">
-                          {isUpdating ? "저장 중..." : "저장"}
+                          {isUpdating ? "Saving..." : "Save"}
                         </Button>
                       </div>
                     </DialogContent>
@@ -104,23 +104,23 @@ export default function LivePage() {
                 <div className="text-2xl text-indigo-600 font-mono">{formatIsoDateTime(timerInfo.targetTime)}</div>
               </div>
 
-              {/* 현재 시간 */}
+              {/* Current Time */}
               <div className="space-y-2">
-                <Label className="text-gray-600">현재 시간</Label>
+                <Label className="text-gray-600">Current Time</Label>
                 <div className="text-2xl text-gray-700 font-mono">{now} (UTC+0)</div>
               </div>
 
-              {/* 남은 시간 */}
+              {/* Remaining Time */}
               <div className="space-y-2">
-                <Label className="text-gray-600">남은 시간</Label>
+                <Label className="text-gray-600">Remaining Time</Label>
                 <div className="text-5xl font-mono text-green-600">{remainingTime}</div>
               </div>
 
-              {/* 액션 버튼들 */}
+              {/* Action Buttons */}
               <div className="flex gap-3 pt-4">
                 <Button onClick={addTimestamp} disabled={isAdding || isTimerEnded} className="flex-1 cursor-pointer">
                   <Save className="w-4 h-4 mr-2" />
-                  {isAdding ? "저장 중..." : "timestamp 저장"}
+                  {isAdding ? "Saving..." : "Save Timestamp"}
                 </Button>
                 <Button
                   onClick={handleShare}
@@ -129,16 +129,16 @@ export default function LivePage() {
                   className="flex-1 cursor-pointer"
                 >
                   <Share2 className="w-4 h-4 mr-2" />
-                  공유 링크 생성
+                  Copy Share Link
                 </Button>
               </div>
             </div>
           </Card>
 
-          {/* 타임스탬프 리스트 */}
+          {/* Timestamp List */}
           {timerInfo.timestamps.length > 0 && (
             <Card className="p-6 shadow-lg">
-              <h2 className="mb-4 text-gray-900">저장된 타임스탬프</h2>
+              <h2 className="mb-4 text-gray-900">Saved Timestamps</h2>
               <div className="space-y-2">
                 {timerInfo.timestamps.map((ts, idx) => (
                   <div

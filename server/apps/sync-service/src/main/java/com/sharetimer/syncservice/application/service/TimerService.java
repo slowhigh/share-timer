@@ -1,61 +1,55 @@
 package com.sharetimer.syncservice.application.service;
 
-import java.io.IOException;
 import java.time.Instant;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import com.sharetimer.core.common.config.RedisTemplateFactory;
-import com.sharetimer.core.common.config.TimerProps;
+import com.sharetimer.storage.redis.config.ReactiveRedisTemplateFactory;
+import com.sharetimer.storage.redis.config.TimerRedisProps;
 import com.sharetimer.syncservice.adapter.out.external.TimerApiClient;
 import com.sharetimer.syncservice.application.port.in.TimerUseCase;
-import com.sharetimer.syncservice.application.port.out.ConnectionPort;
+import com.sharetimer.syncservice.application.port.out.TimerEventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class TimerService implements TimerUseCase {
 
-  private final ConnectionPort connectionPort;
-  private final RedisTemplateFactory redisTemplateFactory;
-  private final TimerProps timerProps;
+  private final TimerEventPublisher timerEventPublisher;
+  private final ReactiveRedisTemplateFactory redisTemplateFactory;
+  private final TimerRedisProps timerRedisProps;
   private final TimerApiClient timerApiClient;
 
   @Override
-  public SseEmitter subscribe(String timerId) {
-    SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
-
-    String key = timerProps.getExpiration().getKeyPrefix() + timerId;
-    if (!redisTemplateFactory.getTemplate(timerProps.getExpiration().getDbIndex()).hasKey(key)) {
-      try {
-        emitter.send(SseEmitter.event().name("timerNotFound"));
-        emitter.complete();
-      } catch (IOException e) {
-        log.error("SSE 에러 전송 중 클라이언트 연결 종료, timerId: {}", timerId, e);
-        emitter.completeWithError(e);
-      }
-      return emitter;
-    }
-
-    connectionPort.add(timerId, emitter);
-    return emitter;
+  public Flux<ServerSentEvent<Object>> subscribe(String timerId) {
+    String key = timerRedisProps.getExpiration().getKeyPrefix() + timerId;
+    return redisTemplateFactory.getTemplate(timerRedisProps.getExpiration().getDbIndex())
+        .hasKey(key).flatMapMany(hasKey -> {
+          if (!Boolean.TRUE.equals(hasKey)) {
+            return Flux.just(ServerSentEvent.builder().event("timerNotFound").build());
+          }
+          return timerEventPublisher.subscribe(timerId);
+        });
   }
 
   @Override
   public void processTimerExpiration(String timerId) {
-    connectionPort.sendTimerEndEvent(timerId);
-    timerApiClient.deleteTimer(timerId);
+    timerEventPublisher.sendTimerEndEvent(timerId);
+    timerApiClient.deleteTimer(timerId).subscribe(
+        success -> log.debug("Timer delete request success: {}", timerId),
+        error -> log.error("Timer delete request failed: {}", timerId, error));
   }
 
   @Override
   public void updateTargetTime(String timerId, Instant updatedAt, Instant serverTime,
       Instant newTargetTime) {
-    connectionPort.updateTargetTime(timerId, updatedAt, serverTime, newTargetTime);
+    timerEventPublisher.updateTargetTime(timerId, updatedAt, serverTime, newTargetTime);
   }
 
   @Override
   public void addTimestamp(String timerId, Instant targetTime, Instant capturedAt) {
-    connectionPort.addTimestamp(timerId, targetTime, capturedAt);
+    timerEventPublisher.addTimestamp(timerId, targetTime, capturedAt);
   }
 }
