@@ -12,6 +12,7 @@ import com.sharetimer.syncservice.application.port.out.TimerEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
+import reactor.util.concurrent.Queues;
 
 @Component
 @Slf4j
@@ -22,10 +23,10 @@ public class ConnectionManager implements TimerEventPublisher {
   public Flux<ServerSentEvent<Object>> subscribe(String timerId) {
     Sinks.Many<ServerSentEvent<Object>> sink = sinks.computeIfAbsent(timerId, k -> {
       log.debug("Sink created: {}", k);
-      return Sinks.many().multicast().onBackpressureBuffer();
+      return Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
     });
 
-    return sink.asFlux().mergeWith(Flux.interval(Duration.ofSeconds(30))
+    return sink.asFlux().mergeWith(Flux.interval(Duration.ZERO, Duration.ofSeconds(30))
         .map(i -> ServerSentEvent.builder().comment("heartbeat").build())).doOnCancel(() -> {
           log.debug("Subscription cancelled: {}", timerId);
         }).doFinally(signalType -> {
@@ -66,7 +67,12 @@ public class ConnectionManager implements TimerEventPublisher {
       return;
     }
 
-    sink.tryEmitNext(ServerSentEvent.builder().event(eventName).data(data).build());
-    log.debug("{} event sent successfully, timerId: {}", eventName, timerId);
+    Sinks.EmitResult result =
+        sink.tryEmitNext(ServerSentEvent.builder().event(eventName).data(data).build());
+    if (result.isFailure()) {
+      log.warn("Failed to emit {} event for timerId {}: {}", eventName, timerId, result);
+    } else {
+      log.debug("{} event sent successfully, timerId: {}", eventName, timerId);
+    }
   }
 }

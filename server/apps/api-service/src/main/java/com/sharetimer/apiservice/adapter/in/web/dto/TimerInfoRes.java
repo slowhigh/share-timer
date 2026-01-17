@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * Timer info response
  */
 @Schema(name = "Timer Info Response", description = "Timer info response")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public record TimerInfoRes(
 
     @JsonProperty("updatedAt") @Schema(name = "updatedAt", description = "Timer update time (UTC)",

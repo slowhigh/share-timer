@@ -1,12 +1,13 @@
 package com.sharetimer.web.support;
 
+import java.net.URI;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import com.sharetimer.web.support.dto.ErrorRes;
 import com.sharetimer.web.support.exception.BadRequestException;
 import com.sharetimer.web.support.exception.DuplicateException;
 import com.sharetimer.web.support.exception.ForbiddenException;
@@ -16,44 +17,46 @@ import com.sharetimer.web.support.exception.NotFoundException;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(BadRequestException.class)
-  public ResponseEntity<ErrorRes> handleBadRequestException(BadRequestException ex) {
-    return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getStatusName(), ex.getMessage());
+  public ResponseEntity<ProblemDetail> handleBadRequestException(BadRequestException ex) {
+    return createProblemDetail(HttpStatus.BAD_REQUEST, ex.getStatusName(), ex.getMessage());
   }
 
   /** Exception handling for @Valid annotation usage */
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorRes> handleMethodArgumentNotValidException(
+  public ResponseEntity<ProblemDetail> handleMethodArgumentNotValidException(
       MethodArgumentNotValidException ex) {
     FieldError fieldError = ex.getBindingResult().getFieldError();
     String errorMessage = fieldError != null ? fieldError.getDefaultMessage() : "Invalid Request";
-    return createErrorResponse(HttpStatus.BAD_REQUEST, "ArgumentNotValid", errorMessage);
+    return createProblemDetail(HttpStatus.BAD_REQUEST, "ArgumentNotValid", errorMessage);
   }
 
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<ErrorRes> handleNotFoundException(NotFoundException ex) {
-    return createErrorResponse(HttpStatus.NOT_FOUND, ex.getStatusName(), ex.getMessage());
+  public ResponseEntity<ProblemDetail> handleNotFoundException(NotFoundException ex) {
+    return createProblemDetail(HttpStatus.NOT_FOUND, ex.getStatusName(), ex.getMessage());
   }
 
   @ExceptionHandler(DuplicateException.class)
-  public ResponseEntity<ErrorRes> handleDuplicateException(DuplicateException ex) {
-    return createErrorResponse(HttpStatus.CONFLICT, ex.getStatusName(), ex.getMessage());
+  public ResponseEntity<ProblemDetail> handleDuplicateException(DuplicateException ex) {
+    return createProblemDetail(HttpStatus.CONFLICT, ex.getStatusName(), ex.getMessage());
   }
 
   @ExceptionHandler(ForbiddenException.class)
-  public ResponseEntity<ErrorRes> handleForbiddenException(ForbiddenException ex) {
-    return createErrorResponse(HttpStatus.FORBIDDEN, ex.getStatusName(), ex.getMessage());
+  public ResponseEntity<ProblemDetail> handleForbiddenException(ForbiddenException ex) {
+    return createProblemDetail(HttpStatus.FORBIDDEN, ex.getStatusName(), ex.getMessage());
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<ErrorRes> handleGlobalException(Exception ex) {
-    return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "InternalServerError",
+  public ResponseEntity<ProblemDetail> handleGlobalException(Exception ex) {
+    return createProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, "InternalServerError",
         ex.getMessage());
   }
 
-  private ResponseEntity<ErrorRes> createErrorResponse(HttpStatus status, String statusName,
-      String message) {
-    ErrorRes errorResponse = new ErrorRes(String.valueOf(status.value()), statusName, message);
-    return new ResponseEntity<>(errorResponse, status);
+  private ResponseEntity<ProblemDetail> createProblemDetail(HttpStatus status, String title,
+      String detail) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
+    problemDetail.setTitle(title);
+    problemDetail.setType(URI.create("https://api.sharetimer.com/errors/" + title.toLowerCase()));
+    return ResponseEntity.status(status).body(problemDetail);
   }
 
 }

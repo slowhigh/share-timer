@@ -3,6 +3,9 @@ server:
   servlet:
     context-path: /api/v1
 
+info:
+  environment: ${spring.profiles.active}
+
 spring:
   application:
     name: api-service

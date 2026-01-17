@@ -3,7 +3,6 @@ package com.sharetimer.apiservice.adapter.out.redis;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharetimer.apiservice.adapter.out.redis.message.TimerAddTimestampMessage;
 import com.sharetimer.apiservice.adapter.out.redis.message.TimerUpdateTargetTimeMessage;
 import com.sharetimer.apiservice.application.port.out.TimerEventPort;
+import com.sharetimer.common.config.InfoProps;
 import com.sharetimer.storage.redis.config.TimerRedisProps;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TimerRedisPublisher implements TimerEventPort {
 
+  private final InfoProps infoProps;
   private final TimerRedisProps timerRedisProps;
   private final ObjectMapper objectMapper;
-  private final Environment env;
 
   @Qualifier("timerExpirationRedisTemplate")
   private final StringRedisTemplate timerExpirationRedisTemplate;
@@ -67,7 +67,8 @@ public class TimerRedisPublisher implements TimerEventPort {
         log.error("Message serialization failed: Message is null.");
         return;
       }
-      String fullChannel = String.format("%s:%s", env.getActiveProfiles()[0], channel);
+      String env = infoProps.getEnvironment();
+      String fullChannel = String.format("%s:%s", env, channel);
       if (fullChannel == null) {
         log.error("Channel name is null.");
         return;

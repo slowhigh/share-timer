@@ -1,6 +1,9 @@
 server:
   port: 5500
 
+info:
+  environment: ${spring.profiles.active}
+
 spring:
   webflux:
     base-path: /sync/v1

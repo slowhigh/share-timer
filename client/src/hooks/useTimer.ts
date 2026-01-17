@@ -1,12 +1,12 @@
 import axiosInstance from "@/lib/axios";
+import { LOCAL_STORAGE_TIMER_OWNER_TOKEN_KEY, OWNER_TOKEN_HEADER_KEY } from "@/lib/constants";
 import { formatDuration, formatIsoDateTime } from "@/lib/utils";
 import { SseService } from "@/services/sseService";
 import { BaseRes, ErrorResponse, TimerInfoResponse } from "@/types/timer";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
-import { LOCAL_STORAGE_TIMER_OWNER_TOKEN_KEY, OWNER_TOKEN_HEADER_KEY } from "@/lib/constants";
-import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 const fetchTimerInfo = async (timerId: string): Promise<TimerInfoResponse> => {
   const ownerToken = localStorage.getItem(LOCAL_STORAGE_TIMER_OWNER_TOKEN_KEY);
@@ -46,14 +46,10 @@ export const useTimer = (timerId: string | null) => {
   }, [error, router]);
 
   useEffect(() => {
-    if (initialData) {
-      setLiveTimerInfo(initialData);
-      lastUpdatedAt.current = initialData.updatedAt;
-    }
-  }, [initialData]);
+    if (!timerId || !initialData) return;
 
-  useEffect(() => {
-    if (!timerId || !liveTimerInfo) return;
+    setLiveTimerInfo(initialData);
+    lastUpdatedAt.current = initialData.updatedAt;
 
     const sseService = new SseService(timerId, {
       onOpen: () => console.log("SSE connection established."),
@@ -64,11 +60,11 @@ export const useTimer = (timerId: string | null) => {
           setLiveTimerInfo((prev) =>
             prev
               ? {
-                  ...prev,
-                  updatedAt: data.updatedAt,
-                  serverTime: data.serverTime,
-                  targetTime: data.newTargetTime,
-                }
+                ...prev,
+                updatedAt: data.updatedAt,
+                serverTime: data.serverTime,
+                targetTime: data.newTargetTime,
+              }
               : null
           );
         }
@@ -94,8 +90,8 @@ export const useTimer = (timerId: string | null) => {
     return () => {
       sseService.close();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timerId, liveTimerInfo?.updatedAt]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timerId, initialData]);
 
   const [remainingTime, setRemainingTime] = useState("00:00:00");
   const [now, setNow] = useState("");
@@ -125,7 +121,7 @@ export const useTimer = (timerId: string | null) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveTimerInfo?.serverTime, liveTimerInfo?.targetTime, isTimerEnded]);
 
   return {

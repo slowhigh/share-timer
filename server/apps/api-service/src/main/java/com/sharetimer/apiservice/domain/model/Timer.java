@@ -4,12 +4,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.hibernate.annotations.UuidGenerator;
 import com.sharetimer.db.jpa.domain.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
@@ -36,7 +35,7 @@ public class Timer extends BaseEntity {
 
   /** PK, UUID */
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
+  @UuidGenerator(style = UuidGenerator.Style.TIME)
   @Column(name = "id", length = 36)
   private UUID id;
 

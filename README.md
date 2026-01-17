@@ -14,6 +14,39 @@ Whether you're coordinating an online study session, managing a team sprint, or 
 
 ---
 
+## How to Run
+### Using Docker Compose
+To start the service with Docker, simply run the following command from the project root directory, where the compose.yaml file is located:
+```
+docker compose up -d
+```
+
+### Access the Web Interface
+Once the containers are running, open your browser and navigate to:
+- http://localhost:8080/
+
+### API Documentation
+#### API Service Documentation
+Access the main API Service’s Swagger documentation at:
+- http://localhost:8080/api/v1/swagger-ui/index.html
+
+#### Sync Service Documentation
+View the Sync Service’s Swagger documentation here:
+- http://localhost:8080/sync/v1/swagger-ui/index.html
+
+### Monitoring
+Access the Eureka dashboard at:
+- http://localhost:8761/
+
+Access the Prometheus dashboard at:
+- http://localhost:9090/targets
+
+Access the Grafana dashboard at:
+- http://localhost:3000/
+- default account: admin / admin
+
+---
+
 ## Architecture Overview
 
 The ShareTimer system is composed of the following main components:
@@ -100,38 +133,124 @@ Services like `api-service` and `sync-service` are designed using Hexagonal Arch
     - **Inbound Adapters (`web`, `listener`)**: Handle REST API requests and message/event listeners.
     - **Outbound Adapters (`persistence`, `redis`, `external`)**: Communicate with databases, message brokers, or external services.
 
----
+#### API Service Class Diagram
 
-## How to Run
-### Using Docker Compose
-To start the service with Docker, simply run the following command from the project root directory, where the compose.yaml file is located:
+```mermaid
+classDiagram
+    %% Domain Layer
+    namespace Domain {
+        class Timer {
+            -UUID id
+            -UUID ownerToken
+            -Instant targetTime
+            -Instant updatedAt
+            -List~Timestamp~ timestamps
+            +updateTargetTime(Instant)
+        }
+        class Timestamp {
+            -Long id
+            -Instant targetTime
+            -Instant capturedAt
+            -Timer timer
+        }
+    }
+    Timer "1" *-- "*" Timestamp : contains
+
+    %% Application Layer - Input Ports
+    namespace Application_Input_Port {
+        class TimerUseCase {
+            <<interface>>
+            +createTimer(CreateTimerCommand)
+            +getTimerInfo(GetTimerCommand)
+            +updateTimer(UpdateTimerCommand)
+            +deleteTimer(DeleteTimerCommand)
+            +addTimestamp(AddTimestampCommand)
+        }
+    }
+
+    %% Application Layer - Output Ports
+    namespace Application_Output_Port {
+        class LoadTimerPort {
+            <<interface>>
+            +loadTimer(UUID)
+        }
+        class SaveTimerPort {
+            <<interface>>
+            +saveTimer(Timer)
+            +deleteTimer(UUID)
+        }
+        class TimerEventPort {
+            <<interface>>
+            +scheduleExpiration(String, Instant)
+            +publishUpdateTimerTargetTime(String, Instant, Instant)
+            +publishAddTimestamp(String, Instant, Instant)
+        }
+    }
+
+    %% Application Layer - Service
+    namespace Application_Service {
+        class TimerServiceImpl {
+            -LoadTimerPort loadTimerPort
+            -SaveTimerPort saveTimerPort
+            -TimerEventPort timerEventPort
+            +createTimer(CreateTimerCommand)
+            +getTimerInfo(GetTimerCommand)
+            +updateTimer(UpdateTimerCommand)
+            +deleteTimer(DeleteTimerCommand)
+            +addTimestamp(AddTimestampCommand)
+        }
+    }
+
+    TimerUseCase <|.. TimerServiceImpl : implements
+    TimerServiceImpl --> LoadTimerPort : uses
+    TimerServiceImpl --> SaveTimerPort : uses
+    TimerServiceImpl --> TimerEventPort : uses
+    TimerServiceImpl ..> Timer : manipulates
+
+    %% Adapter Layer - In (Web)
+    namespace Adapter_In_Web {
+        class TimerController {
+            -TimerUseCase timerUseCase
+            +createTimer(TimerCreateReq)
+            +getTimerInfo(String, String)
+            +updateTimer(String, String, TimerUpdateReq)
+            +deleteTimer(String)
+            +addTimestamp(String, TimerAddTimestampReq)
+        }
+    }
+    TimerController --> TimerUseCase : calls
+
+    %% Adapter Layer - Out (Persistence)
+    namespace Adapter_Out_Persistence {
+        class TimerPersistenceAdapter {
+            -TimerRepository timerRepository
+            +loadTimer(UUID)
+            +saveTimer(Timer)
+            +deleteTimer(UUID)
+        }
+        class TimerRepository {
+            <<interface>>
+            +findWithTimestampsById(UUID)
+        }
+    }
+    LoadTimerPort <|.. TimerPersistenceAdapter : implements
+    SaveTimerPort <|.. TimerPersistenceAdapter : implements
+    TimerPersistenceAdapter --> TimerRepository : uses
+    TimerRepository ..> Timer : returns
+
+    %% Adapter Layer - Out (Redis)
+    namespace Adapter_Out_Redis {
+        class TimerRedisPublisher {
+            -StringRedisTemplate timerExpirationRedisTemplate
+            -StringRedisTemplate timerPubSubRedisTemplate
+            +scheduleExpiration(String, Instant)
+            +publishUpdateTimerTargetTime(...)
+            +publishAddTimestamp(...)
+        }
+    }
+    TimerEventPort <|.. TimerRedisPublisher : implements
 ```
-docker compose up -d
-```
 
-### Access the Web Interface
-Once the containers are running, open your browser and navigate to:
-- http://localhost:8080/
-
-### API Documentation
-#### API Service Documentation
-Access the main API Service’s Swagger documentation at:
-- http://localhost:8080/api/v1/swagger-ui/index.html
-
-#### Sync Service Documentation
-View the Sync Service’s Swagger documentation here:
-- http://localhost:8080/sync/v1/swagger-ui/index.html
-
-### Monitoring
-Access the Eureka dashboard at:
-- http://localhost:8761/
-
-Access the Prometheus dashboard at:
-- http://localhost:9090/targets
-
-Access the Grafana dashboard at:
-- http://localhost:3000/
-- default account: admin / admin
 ---
 
 ## Sequence Diagrams
