@@ -1,8 +1,11 @@
 package com.sharetimer.apiservice.adapter.in.web.dto;
 
 import java.time.Instant;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sharetimer.apiservice.domain.model.Timestamp;
+import com.sharetimer.common.util.CollectionMapper;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -22,4 +25,13 @@ public record TimestampInfoRes(
             pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", timezone = "UTC") Instant capturedAt
 
 ) {
+
+  public static TimestampInfoRes from(Timestamp timestamp) {
+    return new TimestampInfoRes(timestamp.getTargetTime(), timestamp.getCapturedAt());
+  }
+
+  public static List<TimestampInfoRes> fromList(List<Timestamp> timestamps) {
+    return CollectionMapper.map(timestamps, TimestampInfoRes::from);
+  }
+
 }

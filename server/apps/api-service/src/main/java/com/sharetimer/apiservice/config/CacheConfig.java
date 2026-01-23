@@ -27,10 +27,11 @@ public class CacheConfig {
         BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build(),
         ObjectMapper.DefaultTyping.NON_FINAL);
 
-    return RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(60))
+    return RedisCacheConfiguration
+        .defaultCacheConfig()
+        .entryTtl(Duration.ofMinutes(60))
         .disableCachingNullValues()
-        .serializeKeysWith(
-            RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+        .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
         .serializeValuesWith(RedisSerializationContext.SerializationPair
             .fromSerializer(new GenericJackson2JsonRedisSerializer(redisObjectMapper)));
   }

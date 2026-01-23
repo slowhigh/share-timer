@@ -16,6 +16,7 @@ import com.sharetimer.storage.redis.config.TimerRedisProps;
 @ConfigurationPropertiesScan
 @EnableConfigurationProperties({InfoProps.class, RedisProps.class, TimerRedisProps.class})
 @SpringBootApplication(scanBasePackages = "com.sharetimer")
+// TODO: @EnableCaching를 적용 테스트, 현재는 안되고 있어서 CacheConfig Class를 사용하고 있음
 // @EnableCaching
 public class ApiServiceApplication {
 

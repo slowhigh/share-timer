@@ -27,4 +27,8 @@ public abstract class BaseEntity {
   @Column(name = "updated_at", nullable = false)
   private Instant updatedAt;
 
+  public void updateUpdatedAt(Instant updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
 }

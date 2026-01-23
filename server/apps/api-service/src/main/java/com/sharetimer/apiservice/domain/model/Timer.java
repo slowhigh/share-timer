@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -50,6 +51,7 @@ public class Timer extends BaseEntity {
   /** List of timestamps belonging to the timer */
   @Builder.Default
   @OneToMany(mappedBy = "timer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+  @OrderBy("capturedAt ASC")
   private List<Timestamp> timestamps = new ArrayList<>();
 
   public void updateTargetTime(Instant targetTime) {

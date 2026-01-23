@@ -1,16 +1,15 @@
 package com.sharetimer.apiservice.application.service;
 
 import java.time.Instant;
-import java.util.Comparator;
-import java.util.List;
 import java.util.UUID;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.sharetimer.apiservice.adapter.in.web.dto.TimerCreateRes;
 import com.sharetimer.apiservice.adapter.in.web.dto.TimerInfoRes;
-import com.sharetimer.apiservice.adapter.in.web.dto.TimestampInfoRes;
 import com.sharetimer.apiservice.application.port.in.TimerUseCase;
 import com.sharetimer.apiservice.application.port.in.command.AddTimestampCommand;
 import com.sharetimer.apiservice.application.port.in.command.CreateTimerCommand;
@@ -25,6 +24,7 @@ import com.sharetimer.apiservice.domain.model.Timestamp;
 import com.sharetimer.web.support.exception.BadRequestException;
 import com.sharetimer.web.support.exception.ForbiddenException;
 import com.sharetimer.web.support.exception.NotFoundException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,8 +40,7 @@ public class TimerService implements TimerUseCase {
   @Override
   @Transactional
   public TimerCreateRes createTimer(CreateTimerCommand command) {
-    Timer newTimer =
-        Timer.builder().targetTime(command.targetTime()).ownerToken(UUID.randomUUID()).build();
+    Timer newTimer = Timer.builder().targetTime(command.targetTime()).ownerToken(UUID.randomUUID()).build();
 
     Timer savedTimer = saveTimerPort.saveTimer(newTimer);
     log.debug("New timer created: timerId={}, ownerToken={}", savedTimer.getId(),
@@ -60,18 +59,9 @@ public class TimerService implements TimerUseCase {
         .orElseThrow(() -> new NotFoundException("TimerNotFound",
             "Timer not found. timerId=" + command.timerId()));
 
-    Instant serverTime = Instant.now();
-    boolean isOwner = command.ownerToken() != null
-        && UUID.fromString(command.ownerToken()).equals(timer.getOwnerToken());
+    boolean isOwner = isOwner(command.ownerToken(), timer);
 
-    List<TimestampInfoRes> timestamps = timer.getTimestamps().stream()
-        .sorted(Comparator.comparing(Timestamp::getCapturedAt))
-        .map(
-            timestamp -> new TimestampInfoRes(timestamp.getTargetTime(), timestamp.getCapturedAt()))
-        .toList();
-
-    return new TimerInfoRes(timer.getUpdatedAt(), timer.getTargetTime(), serverTime, timestamps,
-        isOwner);
+    return TimerInfoRes.from(Instant.now(), isOwner, timer);
   }
 
   @Override
@@ -89,8 +79,7 @@ public class TimerService implements TimerUseCase {
         .orElseThrow(() -> new NotFoundException("TimerNotFound",
             "Timer not found. timerId=" + command.timerId()));
 
-    if (command.ownerToken() == null
-        || !command.ownerToken().equals(timer.getOwnerToken().toString())) {
+    if (!isOwner(command.ownerToken(), timer)) {
       throw new ForbiddenException("OwnerTokenMismatch", "No permission to update timer.");
     }
 
@@ -101,11 +90,15 @@ public class TimerService implements TimerUseCase {
     }
 
     timer.updateTargetTime(command.targetTime());
-    Timer savedTimer = saveTimerPort.saveTimer(timer);
+    timer.updateUpdatedAt(command.requestTime());
 
-    timerEventPort.scheduleExpiration(savedTimer.getId().toString(), savedTimer.getTargetTime());
-    timerEventPort.publishUpdateTimerTargetTime(savedTimer.getId().toString(),
-        savedTimer.getUpdatedAt(), savedTimer.getTargetTime());
+    timerEventPort.scheduleExpiration(
+        timer.getId().toString(),
+        timer.getTargetTime());
+    timerEventPort.publishUpdateTimerTargetTime(
+        timer.getId().toString(),
+        timer.getUpdatedAt(),
+        timer.getTargetTime());
   }
 
   @Override
@@ -121,12 +114,21 @@ public class TimerService implements TimerUseCase {
           "Timestamp time is before timer target time. capturedAt=" + command.capturedAt());
     }
 
-    Timestamp newTimestamp = Timestamp.builder().timer(timer).targetTime(timer.getTargetTime())
-        .capturedAt(command.capturedAt()).build();
-    timer.getTimestamps().add(newTimestamp);
+    timer.getTimestamps().add(
+        Timestamp.builder()
+            .timer(timer)
+            .targetTime(timer.getTargetTime())
+            .capturedAt(command.capturedAt())
+            .build());
 
-    timerEventPort.publishAddTimestamp(timer.getId().toString(), timer.getTargetTime(),
+    timerEventPort.publishAddTimestamp(
+        timer.getId().toString(),
+        timer.getTargetTime(),
         command.capturedAt());
+  }
+
+  private boolean isOwner(String ownerToken, Timer timer) {
+    return ownerToken != null && UUID.fromString(ownerToken).equals(timer.getOwnerToken());
   }
 
 }
