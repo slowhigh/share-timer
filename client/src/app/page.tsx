@@ -7,6 +7,7 @@ import { DATETIME_LOCAL_REGEX, MSG_INVALID_DATE_FORMAT } from "@/lib/constants";
 import { TextField } from "@radix-ui/themes";
 import { Clock } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Home() {
   const getInitialTime = () => {
@@ -20,7 +21,7 @@ export default function Home() {
 
   const handleCreate = () => {
     if (!DATETIME_LOCAL_REGEX.test(time)) {
-      alert(MSG_INVALID_DATE_FORMAT);
+      toast.error(MSG_INVALID_DATE_FORMAT);
       return;
     }
     createTimer({ targetTime: time + "Z" });
@@ -30,7 +31,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col justify-center min-h-screen">
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Header */}
           <div className="text-center space-y-2">
@@ -41,10 +42,10 @@ export default function Home() {
           </div>
 
           {/* Main Timer Card */}
-          <Card className="flex flex-col justify-center p-8 shadow-lg min-h-60">
-            <div className="mx-auto">
+          <Card className="flex flex-col justify-center p-6 md:p-8 shadow-lg min-h-60">
+            <div className="mx-auto w-full max-w-sm">
               <TextField.Root
-                className="text-2xl text-gray-700 font-mono"
+                className="text-2xl text-center text-gray-700 font-mono w-full [&_input]:text-center"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
                 autoFocus

@@ -10,8 +10,10 @@ import { useTimer } from "@/hooks/useTimer";
 import { useUpdateTimer } from "@/hooks/useUpdateTimer";
 import { DATETIME_LOCAL_REGEX, MSG_INVALID_DATE_FORMAT, MSG_SHARE_LINK_COPIED } from "@/lib/constants";
 import { formatDuration, formatIsoDateTime } from "@/lib/utils";
+import copy from "copy-to-clipboard";
 import { Clock, Edit, Save, Share2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 import { useState } from "react";
 
 export default function LivePage() {
@@ -36,13 +38,13 @@ export default function LivePage() {
     );
 
   const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert(MSG_SHARE_LINK_COPIED);
+    copy(window.location.href);
+    toast.success(MSG_SHARE_LINK_COPIED);
   };
 
   const handleUpdateTimer = () => {
     if (!DATETIME_LOCAL_REGEX.test(newTime)) {
-      alert(MSG_INVALID_DATE_FORMAT);
+      toast.error(MSG_INVALID_DATE_FORMAT);
       return;
     }
     updateTimer(newTime + "Z");
@@ -50,7 +52,7 @@ export default function LivePage() {
 
   return (
     <div className="flex flex-col justify-center min-h-screen">
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Header */}
           <div className="text-center space-y-2">
@@ -61,18 +63,18 @@ export default function LivePage() {
           </div>
 
           {/* Main Timer Card */}
-          <Card className="p-8 shadow-lg">
+          <Card className="p-6 md:p-8 shadow-lg">
             <div className="space-y-6">
               {/* Target Time */}
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
                   <Label className="text-gray-600">Target Time</Label>
                   <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
                       <Button
                         variant="outline"
                         size="sm"
-                        className="cursor-pointer"
+                        className="cursor-pointer w-full md:w-auto"
                         onClick={() => setNewTime(formatIsoDateTime(timerInfo.targetTime).slice(0, -1))}
                       >
                         <Edit className="w-4 h-4 mr-2" />
@@ -92,6 +94,7 @@ export default function LivePage() {
                             disabled={isUpdating}
                             onChange={(e) => setNewTime(e.target.value)}
                             placeholder="YYYY-MM-DDTHH:mm:ss"
+                            className="text-base"
                           />
                         </div>
                         <Button onClick={handleUpdateTimer} disabled={isUpdating} className="w-full">
@@ -101,23 +104,29 @@ export default function LivePage() {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <div className="text-2xl text-indigo-600 font-mono">{formatIsoDateTime(timerInfo.targetTime)}</div>
+                <div className="text-lg md:text-2xl text-indigo-600 font-mono break-all md:break-normal">
+                  {formatIsoDateTime(timerInfo.targetTime)}
+                </div>
               </div>
 
               {/* Current Time */}
               <div className="space-y-2">
                 <Label className="text-gray-600">Current Time</Label>
-                <div className="text-2xl text-gray-700 font-mono">{now} (UTC+0)</div>
+                <div className="text-lg md:text-2xl text-gray-700 font-mono break-all md:break-normal">
+                  {now} (UTC+0)
+                </div>
               </div>
 
               {/* Remaining Time */}
               <div className="space-y-2">
                 <Label className="text-gray-600">Remaining Time</Label>
-                <div className="text-5xl font-mono text-green-600">{remainingTime}</div>
+                <div className="text-4xl md:text-5xl font-mono text-green-600 break-all md:break-normal">
+                  {remainingTime}
+                </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-4">
+              <div className="flex flex-col md:flex-row gap-3 pt-4">
                 <Button onClick={addTimestamp} disabled={isAdding || isTimerEnded} className="flex-1 cursor-pointer">
                   <Save className="w-4 h-4 mr-2" />
                   {isAdding ? "Saving..." : "Save Timestamp"}
@@ -145,7 +154,7 @@ export default function LivePage() {
                     key={idx}
                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
-                    <span className="font-mono text-gray-700">
+                    <span className="text-sm md:text-base font-mono text-gray-700">
                       {formatDuration(
                         Math.max(0, new Date(ts.targetTime).getTime() - new Date(ts.capturedAt).getTime())
                       )}{" "}

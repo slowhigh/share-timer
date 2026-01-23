@@ -4,6 +4,7 @@ import { useUpdateTimer } from "@/hooks/useUpdateTimer";
 import { DATETIME_LOCAL_REGEX, MSG_INVALID_DATE_FORMAT } from "@/lib/constants";
 import { formatIsoDateTime } from "@/lib/utils";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface UpdateTimerModalProps {
   timerId: string;
@@ -18,7 +19,7 @@ export const UpdateTimerModal = ({ timerId, currentTargetTime, onClose }: Update
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!DATETIME_LOCAL_REGEX.test(newTime)) {
-      alert(MSG_INVALID_DATE_FORMAT);
+      toast.error(MSG_INVALID_DATE_FORMAT);
       return;
     }
     updateTimer(newTime + "Z");

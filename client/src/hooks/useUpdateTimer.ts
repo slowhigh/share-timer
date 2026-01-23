@@ -4,11 +4,12 @@ import { getCurrentIsoDateTime } from "@/lib/utils";
 import { ErrorResponse, TimerUpdateRequest } from "@/types/timer";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "sonner";
 
 const updateTimerFn = async (params: { timerId: string; newTargetTime: string }) => {
   const ownerToken = localStorage.getItem(LOCAL_STORAGE_TIMER_OWNER_TOKEN_KEY);
   if (!ownerToken) {
-    alert("Cannot update without owner token.");
+    toast.error("Cannot update without owner token.");
     return;
   }
   const requestBody: TimerUpdateRequest = {
@@ -29,7 +30,7 @@ export const useUpdateTimer = (timerId: string | null, onSuccess: () => void) =>
     onSuccess,
     onError: (err: AxiosError<ErrorResponse>) => {
       const message = err.response?.data?.message || "Failed to update timer.";
-      alert(message);
+      toast.error(message);
       console.error("Failed to update timer:", err);
     },
   });

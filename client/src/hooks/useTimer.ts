@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 const fetchTimerInfo = async (timerId: string): Promise<TimerInfoResponse> => {
   const ownerToken = localStorage.getItem(LOCAL_STORAGE_TIMER_OWNER_TOKEN_KEY);
@@ -39,7 +40,7 @@ export const useTimer = (timerId: string | null) => {
   useEffect(() => {
     if (error) {
       if (error.response?.status === 404) {
-        alert("Timer has ended or does not exist.");
+        toast.error("Timer has ended or does not exist.");
         router.push("/");
       }
     }
@@ -79,7 +80,7 @@ export const useTimer = (timerId: string | null) => {
         });
       },
       onTimerEnd: () => {
-        alert("Timer ended");
+        toast.info("Timer ended");
         setIsTimerEnded(true);
         sseService?.close();
       },

@@ -4,6 +4,7 @@ import { BaseRes, ErrorResponse, TimerCreateRequest, TimerCreateResponse } from 
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const createTimerFn = async (data: TimerCreateRequest): Promise<TimerCreateResponse> => {
   const response = await axiosInstance.post<BaseRes<TimerCreateResponse>>("/timers", data);
@@ -30,7 +31,7 @@ export const useCreateTimer = () => {
     },
     onError: (err) => {
       const message = err.response?.data?.message || "Unknown error occurred.";
-      alert(`Failed to create timer: ${message}`);
+      toast.error(`Failed to create timer: ${message}`);
       console.error("API call failed:", err);
     },
   });

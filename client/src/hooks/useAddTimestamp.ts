@@ -3,6 +3,7 @@ import { getCurrentIsoDateTime } from "@/lib/utils";
 import { ErrorResponse, TimerAddTimestampRequest } from "@/types/timer";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "sonner";
 
 const addTimestampFn = async (params: { timerId: string; requestBody: TimerAddTimestampRequest }) => {
   await axiosInstance.post(`/timers/${params.timerId}/timestamps`, params.requestBody);
@@ -16,7 +17,7 @@ export const useAddTimestamp = (timerId: string | null) => {
     },
     onError: (err: AxiosError<ErrorResponse>) => {
       const message = err.response?.data?.message || "Failed to add timestamp.";
-      alert(message);
+      toast.error(message);
       console.error("Failed to add timestamp:", err);
     },
   });
