@@ -1,11 +1,10 @@
 package com.sharetimer.storage.redis.config;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -13,19 +12,23 @@ import lombok.RequiredArgsConstructor;
 public class RedisTemplateFactory {
 
   private final RedisProps redisProps;
-  private final Map<Integer, StringRedisTemplate> templates = new ConcurrentHashMap<>();
+  private volatile StringRedisTemplate template;
 
-  public StringRedisTemplate getTemplate(int dbIndex) {
-    if (dbIndex < 0 || dbIndex > 15) {
-      throw new IllegalArgumentException("Redis DB index must be between 0 and 15.");
+  public StringRedisTemplate getTemplate() {
+    if (template == null) {
+      synchronized (this) {
+        if (template == null) {
+          template = createTemplate();
+        }
+      }
     }
-    return templates.computeIfAbsent(dbIndex, this::createTemplateForDb);
+    return template;
   }
 
-  private StringRedisTemplate createTemplateForDb(int dbIndex) {
-    RedisStandaloneConfiguration redisConfig =
-        new RedisStandaloneConfiguration(redisProps.getHost(), redisProps.getPort());
-    redisConfig.setDatabase(dbIndex);
+  private StringRedisTemplate createTemplate() {
+    RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration(redisProps.getHost(),
+        redisProps.getPort());
+    // Default DB 0
 
     LettuceConnectionFactory factory = new LettuceConnectionFactory(redisConfig);
     factory.afterPropertiesSet();

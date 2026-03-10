@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.sharetimer.apiservice.domain.model.Timer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
@@ -35,4 +36,10 @@ public record TimerInfoRes(
         example = "true") boolean isOwner
 
 ) {
+
+  public static TimerInfoRes from(Instant serverTime, Boolean isOwner, Timer timer) {
+    return new TimerInfoRes(timer.getUpdatedAt(), timer.getTargetTime(), serverTime,
+        TimestampInfoRes.fromList(timer.getTimestamps()), isOwner);
+  }
+
 }

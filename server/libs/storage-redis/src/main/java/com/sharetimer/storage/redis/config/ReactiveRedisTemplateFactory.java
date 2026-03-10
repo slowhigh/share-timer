@@ -1,13 +1,12 @@
 package com.sharetimer.storage.redis.config;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
+
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -15,20 +14,22 @@ import lombok.RequiredArgsConstructor;
 public class ReactiveRedisTemplateFactory {
 
   private final RedisProps redisProps;
-  private final Map<Integer, ReactiveRedisTemplate<String, String>> templates =
-      new ConcurrentHashMap<>();
+  private volatile ReactiveRedisTemplate<String, String> template;
 
-  public ReactiveRedisTemplate<String, String> getTemplate(int dbIndex) {
-    if (dbIndex < 0 || dbIndex > 15) {
-      throw new IllegalArgumentException("Redis DB index must be between 0 and 15.");
+  public ReactiveRedisTemplate<String, String> getTemplate() {
+    if (template == null) {
+      synchronized (this) {
+        if (template == null) {
+          template = createTemplate();
+        }
+      }
     }
-    return templates.computeIfAbsent(dbIndex, this::createTemplateForDb);
+    return template;
   }
 
-  private ReactiveRedisTemplate<String, String> createTemplateForDb(int dbIndex) {
-    RedisStandaloneConfiguration redisConfig =
-        new RedisStandaloneConfiguration(redisProps.getHost(), redisProps.getPort());
-    redisConfig.setDatabase(dbIndex);
+  private ReactiveRedisTemplate<String, String> createTemplate() {
+    RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration(redisProps.getHost(),
+        redisProps.getPort());
 
     LettuceConnectionFactory factory = new LettuceConnectionFactory(redisConfig);
     factory.afterPropertiesSet();
