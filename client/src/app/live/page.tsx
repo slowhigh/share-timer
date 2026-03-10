@@ -9,7 +9,7 @@ import { useAddTimestamp } from "@/hooks/useAddTimestamp";
 import { useTimer } from "@/hooks/useTimer";
 import { useUpdateTimer } from "@/hooks/useUpdateTimer";
 import { DATETIME_LOCAL_REGEX, MSG_INVALID_DATE_FORMAT, MSG_SHARE_LINK_COPIED } from "@/lib/constants";
-import { formatDuration, formatIsoDateTime } from "@/lib/utils";
+import { formatDuration, formatIsoDateTime, getTimezoneOffsetString, localDateTimeToUtcIso } from "@/lib/utils";
 import copy from "copy-to-clipboard";
 import { Clock, Edit, Save, Share2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -47,7 +47,7 @@ export default function LivePage() {
       toast.error(MSG_INVALID_DATE_FORMAT);
       return;
     }
-    updateTimer(newTime + "Z");
+    updateTimer(localDateTimeToUtcIso(newTime));
   };
 
   return (
@@ -69,40 +69,43 @@ export default function LivePage() {
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
                   <Label className="text-gray-600">Target Time</Label>
-                  <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="cursor-pointer w-full md:w-auto"
-                        onClick={() => setNewTime(formatIsoDateTime(timerInfo.targetTime).slice(0, -1))}
-                      >
-                        <Edit className="w-4 h-4 mr-2" />
-                        Edit Target Time
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Edit Target Time</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4 pt-4">
-                        <div className="space-y-2">
-                          <Label>Target Time (ISO 8601)</Label>
-                          <Input
-                            type="text"
-                            value={newTime}
-                            disabled={isUpdating}
-                            onChange={(e) => setNewTime(e.target.value)}
-                            placeholder="YYYY-MM-DDTHH:mm:ss"
-                            className="text-base"
-                          />
-                        </div>
-                        <Button onClick={handleUpdateTimer} disabled={isUpdating} className="w-full">
-                          {isUpdating ? "Saving..." : "Save"}
+                  {timerInfo.isOwner && (
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="cursor-pointer w-full md:w-auto"
+                          onClick={() => setNewTime(formatIsoDateTime(timerInfo.targetTime))}
+                          disabled={isTimerEnded}
+                        >
+                          <Edit className="w-4 h-4 mr-2" />
+                          Edit Target Time
                         </Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Edit Target Time</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4 pt-4">
+                          <div className="space-y-2">
+                            <Label>Target Time (ISO 8601)</Label>
+                            <Input
+                              type="text"
+                              value={newTime}
+                              disabled={isUpdating}
+                              onChange={(e) => setNewTime(e.target.value)}
+                              placeholder="YYYY-MM-DDTHH:mm:ss"
+                              className="text-base"
+                            />
+                          </div>
+                          <Button onClick={handleUpdateTimer} disabled={isUpdating} className="w-full">
+                            {isUpdating ? "Saving..." : "Save"}
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
                 </div>
                 <div className="text-lg md:text-2xl text-indigo-600 font-mono break-all md:break-normal">
                   {formatIsoDateTime(timerInfo.targetTime)}
@@ -113,7 +116,7 @@ export default function LivePage() {
               <div className="space-y-2">
                 <Label className="text-gray-600">Current Time</Label>
                 <div className="text-lg md:text-2xl text-gray-700 font-mono break-all md:break-normal">
-                  {now} (UTC+0)
+                  {now} ({getTimezoneOffsetString()})
                 </div>
               </div>
 

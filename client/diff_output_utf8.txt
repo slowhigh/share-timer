@@ -1,0 +1,233 @@
+﻿diff --git a/client/src/app/live/page.tsx b/client/src/app/live/page.tsx
+index b722132..74eefb0 100644
+--- a/client/src/app/live/page.tsx
++++ b/client/src/app/live/page.tsx
+@@ -9,7 +9,7 @@ import { useAddTimestamp } from "@/hooks/useAddTimestamp";
+ import { useTimer } from "@/hooks/useTimer";
+ import { useUpdateTimer } from "@/hooks/useUpdateTimer";
+ import { DATETIME_LOCAL_REGEX, MSG_INVALID_DATE_FORMAT, MSG_SHARE_LINK_COPIED } from "@/lib/constants";
+-import { formatDuration, formatIsoDateTime } from "@/lib/utils";
++import { formatDuration, formatIsoDateTime, getTimezoneOffsetString, localDateTimeToUtcIso } from "@/lib/utils";
+ import copy from "copy-to-clipboard";
+ import { Clock, Edit, Save, Share2 } from "lucide-react";
+ import { useSearchParams } from "next/navigation";
+@@ -47,7 +47,7 @@ export default function LivePage() {
+       toast.error(MSG_INVALID_DATE_FORMAT);
+       return;
+     }
+-    updateTimer(newTime + "Z");
++    updateTimer(localDateTimeToUtcIso(newTime));
+   };
+ 
+   return (
+@@ -69,40 +69,43 @@ export default function LivePage() {
+               <div className="space-y-2">
+                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                   <Label className="text-gray-600">Target Time</Label>
+-                  <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+-                    <DialogTrigger asChild>
+-                      <Button
+-                        variant="outline"
+-                        size="sm"
+-                        className="cursor-pointer w-full md:w-auto"
+-                        onClick={() => setNewTime(formatIsoDateTime(timerInfo.targetTime).slice(0, -1))}
+-                      >
+-                        <Edit className="w-4 h-4 mr-2" />
+-                        Edit Target Time
+-                      </Button>
+-                    </DialogTrigger>
+-                    <DialogContent>
+-                      <DialogHeader>
+-                        <DialogTitle>Edit Target Time</DialogTitle>
+-                      </DialogHeader>
+-                      <div className="space-y-4 pt-4">
+-                        <div className="space-y-2">
+-                          <Label>Target Time (ISO 8601)</Label>
+-                          <Input
+-                            type="text"
+-                            value={newTime}
+-                            disabled={isUpdating}
+-                            onChange={(e) => setNewTime(e.target.value)}
+-                            placeholder="YYYY-MM-DDTHH:mm:ss"
+-                            className="text-base"
+-                          />
+-                        </div>
+-                        <Button onClick={handleUpdateTimer} disabled={isUpdating} className="w-full">
+-                          {isUpdating ? "Saving..." : "Save"}
++                  {timerInfo.isOwner && (
++                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
++                      <DialogTrigger asChild>
++                        <Button
++                          variant="outline"
++                          size="sm"
++                          className="cursor-pointer w-full md:w-auto"
++                          onClick={() => setNewTime(formatIsoDateTime(timerInfo.targetTime))}
++                          disabled={isTimerEnded}
++                        >
++                          <Edit className="w-4 h-4 mr-2" />
++                          Edit Target Time
+                         </Button>
+-                      </div>
+-                    </DialogContent>
+-                  </Dialog>
++                      </DialogTrigger>
++                      <DialogContent>
++                        <DialogHeader>
++                          <DialogTitle>Edit Target Time</DialogTitle>
++                        </DialogHeader>
++                        <div className="space-y-4 pt-4">
++                          <div className="space-y-2">
++                            <Label>Target Time (ISO 8601)</Label>
++                            <Input
++                              type="text"
++                              value={newTime}
++                              disabled={isUpdating}
++                              onChange={(e) => setNewTime(e.target.value)}
++                              placeholder="YYYY-MM-DDTHH:mm:ss"
++                              className="text-base"
++                            />
++                          </div>
++                          <Button onClick={handleUpdateTimer} disabled={isUpdating} className="w-full">
++                            {isUpdating ? "Saving..." : "Save"}
++                          </Button>
++                        </div>
++                      </DialogContent>
++                    </Dialog>
++                  )}
+                 </div>
+                 <div className="text-lg md:text-2xl text-indigo-600 font-mono break-all md:break-normal">
+                   {formatIsoDateTime(timerInfo.targetTime)}
+@@ -113,7 +116,7 @@ export default function LivePage() {
+               <div className="space-y-2">
+                 <Label className="text-gray-600">Current Time</Label>
+                 <div className="text-lg md:text-2xl text-gray-700 font-mono break-all md:break-normal">
+-                  {now} (UTC+0)
++                  {now} ({getTimezoneOffsetString()})
+                 </div>
+               </div>
+ 
+diff --git a/client/src/app/page.tsx b/client/src/app/page.tsx
+index ef0ab65..a62657a 100644
+--- a/client/src/app/page.tsx
++++ b/client/src/app/page.tsx
+@@ -4,6 +4,7 @@ import { Button } from "@/components/button";
+ import { Card } from "@/components/card";
+ import { useCreateTimer } from "@/hooks/useCreateTimer";
+ import { DATETIME_LOCAL_REGEX, MSG_INVALID_DATE_FORMAT } from "@/lib/constants";
++import { formatIsoDateTime, localDateTimeToUtcIso } from "@/lib/utils";
+ import { TextField } from "@radix-ui/themes";
+ import { Clock } from "lucide-react";
+ import { useState } from "react";
+@@ -12,8 +13,8 @@ import { toast } from "sonner";
+ export default function Home() {
+   const getInitialTime = () => {
+     const date = new Date();
+-    date.setUTCHours(date.getUTCHours() + 1);
+-    return date.toISOString().split(".")[0];
++    date.setHours(date.getHours() + 1);
++    return formatIsoDateTime(date.toISOString());
+   };
+ 
+   const [time, setTime] = useState(getInitialTime);
+@@ -24,7 +25,7 @@ export default function Home() {
+       toast.error(MSG_INVALID_DATE_FORMAT);
+       return;
+     }
+-    createTimer({ targetTime: time + "Z" });
++    createTimer({ targetTime: localDateTimeToUtcIso(time) });
+ 
+     console.log("Create Timer Error:", error);
+   };
+diff --git a/client/src/components/updateTimerModal.tsx b/client/src/components/updateTimerModal.tsx
+index 38ea0b5..d696ffe 100644
+--- a/client/src/components/updateTimerModal.tsx
++++ b/client/src/components/updateTimerModal.tsx
+@@ -2,7 +2,7 @@
+ 
+ import { useUpdateTimer } from "@/hooks/useUpdateTimer";
+ import { DATETIME_LOCAL_REGEX, MSG_INVALID_DATE_FORMAT } from "@/lib/constants";
+-import { formatIsoDateTime } from "@/lib/utils";
++import { formatIsoDateTime, localDateTimeToUtcIso } from "@/lib/utils";
+ import { useState } from "react";
+ import { toast } from "sonner";
+ 
+@@ -13,7 +13,7 @@ interface UpdateTimerModalProps {
+ }
+ 
+ export const UpdateTimerModal = ({ timerId, currentTargetTime, onClose }: UpdateTimerModalProps) => {
+-  const [newTime, setNewTime] = useState(formatIsoDateTime(currentTargetTime).slice(0, -1));
++  const [newTime, setNewTime] = useState(formatIsoDateTime(currentTargetTime));
+   const { updateTimer, isUpdating } = useUpdateTimer(timerId, onClose);
+ 
+   const handleSubmit = (e: React.FormEvent) => {
+@@ -22,7 +22,7 @@ export const UpdateTimerModal = ({ timerId, currentTargetTime, onClose }: Update
+       toast.error(MSG_INVALID_DATE_FORMAT);
+       return;
+     }
+-    updateTimer(newTime + "Z");
++    updateTimer(localDateTimeToUtcIso(newTime));
+   };
+ 
+   return (
+diff --git a/client/src/hooks/useUpdateTimer.ts b/client/src/hooks/useUpdateTimer.ts
+index ecb3984..d4ba03b 100644
+--- a/client/src/hooks/useUpdateTimer.ts
++++ b/client/src/hooks/useUpdateTimer.ts
+@@ -31,7 +31,6 @@ export const useUpdateTimer = (timerId: string | null, onSuccess: () => void) =>
+     onError: (err: AxiosError<ErrorResponse>) => {
+       const message = err.response?.data?.message || "Failed to update timer.";
+       toast.error(message);
+-      console.error("Failed to update timer:", err);
+     },
+   });
+ 
+diff --git a/client/src/lib/utils.ts b/client/src/lib/utils.ts
+index d5c3e86..605e94a 100644
+--- a/client/src/lib/utils.ts
++++ b/client/src/lib/utils.ts
+@@ -14,18 +14,37 @@ export const formatDuration = (milliseconds: number): string => {
+ };
+ 
+ /**
+- * ISO to YYYY-MM-DDTHH:mm:ssZ
++ * ISO to YYYY-MM-DDTHH:mm:ss in local time
+  * @param isoString ISO 8601 string
+  */
+ export const formatIsoDateTime = (isoString: string): string => {
+   const date = new Date(isoString);
+-  const year = date.getUTCFullYear();
+-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+-  const day = String(date.getUTCDate()).padStart(2, "0");
+-  const hours = String(date.getUTCHours()).padStart(2, "0");
+-  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+-  const seconds = String(date.getUTCSeconds()).padStart(2, "0");
+-  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
++  const year = date.getFullYear();
++  const month = String(date.getMonth() + 1).padStart(2, "0");
++  const day = String(date.getDate()).padStart(2, "0");
++  const hours = String(date.getHours()).padStart(2, "0");
++  const minutes = String(date.getMinutes()).padStart(2, "0");
++  const seconds = String(date.getSeconds()).padStart(2, "0");
++  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
++};
++
++/**
++ * Get timezone offset string (e.g., "UTC+9", "UTC-5", "UTC+5:30")
++ */
++export const getTimezoneOffsetString = (): string => {
++  const offset = -new Date().getTimezoneOffset();
++  const sign = offset >= 0 ? "+" : "-";
++  const absOffset = Math.abs(offset);
++  const hours = Math.floor(absOffset / 60);
++  const minutes = absOffset % 60;
++  return minutes === 0 ? `UTC${sign}${hours}` : `UTC${sign}${hours}:${String(minutes).padStart(2, "0")}`;
++};
++
++/**
++ * Convert local datetime string (YYYY-MM-DDTHH:mm:ss) to UTC ISO string
++ */
++export const localDateTimeToUtcIso = (localDateTime: string): string => {
++  return new Date(localDateTime).toISOString().split(".")[0] + "Z";
+ };
+ 
+ /**

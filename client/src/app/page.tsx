@@ -4,6 +4,7 @@ import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { useCreateTimer } from "@/hooks/useCreateTimer";
 import { DATETIME_LOCAL_REGEX, MSG_INVALID_DATE_FORMAT } from "@/lib/constants";
+import { formatIsoDateTime, localDateTimeToUtcIso } from "@/lib/utils";
 import { TextField } from "@radix-ui/themes";
 import { Clock } from "lucide-react";
 import { useState } from "react";
@@ -12,8 +13,8 @@ import { toast } from "sonner";
 export default function Home() {
   const getInitialTime = () => {
     const date = new Date();
-    date.setUTCHours(date.getUTCHours() + 1);
-    return date.toISOString().split(".")[0];
+    date.setHours(date.getHours() + 1);
+    return formatIsoDateTime(date.toISOString());
   };
 
   const [time, setTime] = useState(getInitialTime);
@@ -24,7 +25,7 @@ export default function Home() {
       toast.error(MSG_INVALID_DATE_FORMAT);
       return;
     }
-    createTimer({ targetTime: time + "Z" });
+    createTimer({ targetTime: localDateTimeToUtcIso(time) });
 
     console.log("Create Timer Error:", error);
   };

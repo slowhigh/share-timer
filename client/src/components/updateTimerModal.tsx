@@ -2,7 +2,7 @@
 
 import { useUpdateTimer } from "@/hooks/useUpdateTimer";
 import { DATETIME_LOCAL_REGEX, MSG_INVALID_DATE_FORMAT } from "@/lib/constants";
-import { formatIsoDateTime } from "@/lib/utils";
+import { formatIsoDateTime, localDateTimeToUtcIso } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -13,7 +13,7 @@ interface UpdateTimerModalProps {
 }
 
 export const UpdateTimerModal = ({ timerId, currentTargetTime, onClose }: UpdateTimerModalProps) => {
-  const [newTime, setNewTime] = useState(formatIsoDateTime(currentTargetTime).slice(0, -1));
+  const [newTime, setNewTime] = useState(formatIsoDateTime(currentTargetTime));
   const { updateTimer, isUpdating } = useUpdateTimer(timerId, onClose);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -22,7 +22,7 @@ export const UpdateTimerModal = ({ timerId, currentTargetTime, onClose }: Update
       toast.error(MSG_INVALID_DATE_FORMAT);
       return;
     }
-    updateTimer(newTime + "Z");
+    updateTimer(localDateTimeToUtcIso(newTime));
   };
 
   return (

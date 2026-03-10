@@ -31,7 +31,6 @@ export const useUpdateTimer = (timerId: string | null, onSuccess: () => void) =>
     onError: (err: AxiosError<ErrorResponse>) => {
       const message = err.response?.data?.message || "Failed to update timer.";
       toast.error(message);
-      console.error("Failed to update timer:", err);
     },
   });
 
