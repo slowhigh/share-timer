@@ -1,16 +1,19 @@
 package com.sharetimer.syncservice.adapter.in.listener;
 
 import java.util.Objects;
+
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharetimer.common.config.InfoProps;
 import com.sharetimer.storage.redis.config.RedisMessageListenerContainerFactory;
 import com.sharetimer.storage.redis.config.TimerRedisProps;
 import com.sharetimer.syncservice.adapter.in.listener.message.TimerUpdateTargetTimeMessage;
 import com.sharetimer.syncservice.application.port.in.TimerUseCase;
+
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,13 +33,12 @@ public class TimerTargetTimeUpdateListener implements MessageListener {
   public void init() {
     String env = infoProps.getEnvironment();
 
-    String topic = Objects.requireNonNull(
-        String.format("%s:%s", env, timerRedisProps.getPubSub().getTargetTimeUpdatedChannel()));
+    String topic = Objects
+        .requireNonNull(String.format("%s:%s", env, timerRedisProps.getPubSub().getTargetTimeUpdatedChannel()));
 
     log.debug("subscribe topic: {}", topic);
 
-    factory.getContainer(timerRedisProps.getPubSub().getDbIndex()).addMessageListener(this,
-        new PatternTopic(topic));
+    factory.getContainer().addMessageListener(this, new PatternTopic(topic));
   }
 
   @Override
@@ -46,8 +48,7 @@ public class TimerTargetTimeUpdateListener implements MessageListener {
     TimerUpdateTargetTimeMessage timerUpdateTargetTimeMessage = null;
 
     try {
-      timerUpdateTargetTimeMessage =
-          objectMapper.readValue(body, TimerUpdateTargetTimeMessage.class);
+      timerUpdateTargetTimeMessage = objectMapper.readValue(body, TimerUpdateTargetTimeMessage.class);
     } catch (Exception e) {
       log.error("Message parsing failed body: {}", body);
       return;

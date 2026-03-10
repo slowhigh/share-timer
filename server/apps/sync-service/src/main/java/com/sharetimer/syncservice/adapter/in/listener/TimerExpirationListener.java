@@ -4,9 +4,11 @@ import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.stereotype.Component;
+
 import com.sharetimer.storage.redis.config.RedisMessageListenerContainerFactory;
 import com.sharetimer.storage.redis.config.TimerRedisProps;
 import com.sharetimer.syncservice.application.port.in.TimerUseCase;
+
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +24,7 @@ public class TimerExpirationListener implements MessageListener {
 
   @PostConstruct
   public void init() {
-    int idx = timerRedisProps.getExpiration().getDbIndex();
-    factory.getContainer(idx).addMessageListener(this,
-        new PatternTopic(String.format("__keyevent@%d__:expired", idx)));
+    factory.getContainer().addMessageListener(this, new PatternTopic("__keyevent@0__:expired"));
   }
 
   @Override

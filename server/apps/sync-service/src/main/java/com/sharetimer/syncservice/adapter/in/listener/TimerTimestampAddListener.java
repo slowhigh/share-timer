@@ -1,16 +1,19 @@
 package com.sharetimer.syncservice.adapter.in.listener;
 
 import java.util.Objects;
+
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharetimer.common.config.InfoProps;
 import com.sharetimer.storage.redis.config.RedisMessageListenerContainerFactory;
 import com.sharetimer.storage.redis.config.TimerRedisProps;
 import com.sharetimer.syncservice.adapter.in.listener.message.TimerAddTimestampMessage;
 import com.sharetimer.syncservice.application.port.in.TimerUseCase;
+
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +38,7 @@ public class TimerTimestampAddListener implements MessageListener {
 
     log.debug("subscribe topic: {}", topic);
 
-    factory.getContainer(timerRedisProps.getPubSub().getDbIndex()).addMessageListener(this,
+    factory.getContainer().addMessageListener(this,
         new PatternTopic(topic));
   }
 
