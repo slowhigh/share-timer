@@ -1,9 +1,8 @@
 plugins {
     `java-library`
+    alias(libs.plugins.kotlin.jpa)
 }
 
 dependencies {
-    api(libs.spring.boot.starter.jdbc)
-    api(libs.spring.boot.starter.data.jdbc)
     api(libs.spring.boot.starter.data.jpa)
 }

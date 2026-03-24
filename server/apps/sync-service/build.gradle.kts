@@ -1,5 +1,3 @@
-import org.springframework.boot.gradle.tasks.run.BootRun
-
 dependencies {
     implementation(project(":libs:common"))
     implementation(project(":libs:web-support"))
@@ -9,4 +7,6 @@ dependencies {
     implementation(libs.bundles.eureka.client)
     implementation(libs.spring.boot.starter.webflux)
     implementation(libs.springdoc.openapi.starter.webflux.ui)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.reactor)
 }

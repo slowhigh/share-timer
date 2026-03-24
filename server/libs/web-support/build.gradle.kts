@@ -4,6 +4,6 @@ plugins {
 
 dependencies {
     implementation(project(":libs:common"))
-    
+
     api(libs.spring.web)
 }

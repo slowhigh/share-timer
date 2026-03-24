@@ -1,10 +1,14 @@
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
-import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    java
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.spring) apply false
+    alias(libs.plugins.kotlin.jpa) apply false
     alias(libs.plugins.spring.boot) apply false
     alias(libs.plugins.spring.dependency.management) apply false
+    alias(libs.plugins.spotless)
 }
 
 allprojects {
@@ -16,13 +20,27 @@ allprojects {
     }
 }
 
+spotless {
+    val ktlintVersion = libs.versions.ktlint.get()
+    kotlin {
+        target("**/*.kt")
+        targetExclude("**/build/**/*.kt", "**/bin/**/*.kt")
+        ktlint(ktlintVersion)
+    }
+    kotlinGradle {
+        target("**/*.gradle.kts")
+        ktlint(ktlintVersion)
+    }
+}
+
 subprojects {
     val libs = rootProject.libs
 
-    apply(plugin = "java")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "io.spring.dependency-management")
 
-    java {
+    extensions.configure<JavaPluginExtension> {
         toolchain {
             languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
         }
@@ -36,25 +54,26 @@ subprojects {
     }
 
     dependencies {
-        compileOnly(libs.lombok)
-        annotationProcessor(libs.lombok)
-        testCompileOnly(libs.lombok)
-        testAnnotationProcessor(libs.lombok)
+        add("implementation", libs.kotlin.reflect)
+        add("implementation", libs.jackson.module.kotlin)
 
-        annotationProcessor(libs.spring.boot.configuration.processor)
+        add("annotationProcessor", libs.spring.boot.configuration.processor)
 
-        testImplementation(libs.spring.boot.starter.test)
+        add("testImplementation", libs.spring.boot.starter.test)
+    }
+
+    tasks.withType<KotlinCompile> {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+            freeCompilerArgs.addAll("-Xjsr305=strict", "-java-parameters")
+        }
     }
 
     tasks.withType<Test> {
         useJUnitPlatform()
     }
 
-    tasks.withType<JavaCompile> {
-        options.compilerArgs.add("-parameters")
-    }
-
-    if (path.startsWith(":apps")) {
+    if (path.startsWith(":apps:")) {
         apply(plugin = "org.springframework.boot")
 
         dependencies {
@@ -62,7 +81,7 @@ subprojects {
         }
     }
 
-    if (path.startsWith(":libs")) {
+    if (path.startsWith(":libs:")) {
         tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
             enabled = false
         }

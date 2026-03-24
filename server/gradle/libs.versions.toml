@@ -1,12 +1,15 @@
 [versions]
 java = "21"
-springBoot = "3.3.5"
-springDependencyManagement = "1.1.6"
-springCloud = "2023.0.3"
-springDoc = "2.6.0"
-swaggerAnnotations = "2.2.22"
-lombok = "1.18.30" # Managed by Spring Boot usually, but good to have if needed explicitly
-micrometer = "1.12.0" # Managed by Spring Boot
+kotlin = "2.1.10"
+spotless = "7.0.2"
+ktlint = "1.5.0"
+kotlinxCoroutines = "1.10.2"
+springBoot = "3.5.11"
+springDependencyManagement = "1.1.7"
+springCloud = "2025.0.1"
+springDoc = "2.8.15"
+swaggerAnnotations = "2.2.44"
+micrometer = "1.15.2" # Managed by Spring Boot
 
 # Spring Boot Starters
 [libraries]
@@ -16,6 +19,9 @@ spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
 spring-boot-starter-data-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc" }
 spring-boot-starter-data-redis = { module = "org.springframework.boot:spring-boot-starter-data-redis" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure" }
+spring-data-redis = { module = "org.springframework.data:spring-data-redis" }
+lettuce-core = { module = "io.lettuce:lettuce-core" }
 spring-boot-starter-jdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
@@ -39,19 +45,31 @@ springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openap
 springdoc-openapi-starter-webflux-ui = { module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "springDoc" }
 swagger-annotations = { module = "io.swagger.core.v3:swagger-annotations", version.ref = "swaggerAnnotations" }
 
+# Kotlin
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinxCoroutines" }
+
+# Cache
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine" }
+
 # Utils & Tools
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations" }
 jakarta-servlet-api = { module = "jakarta.servlet:jakarta.servlet-api" }
-lombok = { module = "org.projectlombok:lombok" }
 
 # Observability
 micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
 
 [bundles]
 observability = ["spring-boot-starter-actuator", "micrometer-registry-prometheus"]
-eureka-client = ["spring-cloud-starter-netflix-eureka-client"]
+eureka-client = ["spring-cloud-starter-netflix-eureka-client", "caffeine"]
 eureka-server = ["spring-cloud-starter-netflix-eureka-server"]
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

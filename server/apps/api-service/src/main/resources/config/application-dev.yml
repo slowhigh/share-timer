@@ -19,7 +19,6 @@ spring:
       host: imdb
       port: 6379
   jpa:
-    database: postgresql
     open-in-view: false
     hibernate:
       ddl-auto: update # create-only, validate, create-drop, update
